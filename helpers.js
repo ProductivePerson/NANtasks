@@ -102,6 +102,8 @@ createGroup: function(groupName, username, res){
 		})
 
 },
+
+//delete group
 deleteGroup: function(groupId, res){
 	Model.group.remove({"_id": groupId}, function (err) {
 		if(err){
@@ -115,10 +117,9 @@ deleteGroup: function(groupId, res){
 	addUserToGroup: function(username, groupId, res, next){
 		Model.user.findOne({"username": username}, function(err, user){
 			if(err){
-				res.send("User not found", err)
+				next("User not found", err)
 			}
 			if(user) {
-					console.log("USER HAS A LENGTH!")
 					Model.group.findOne({"_id": groupId}, function(error, group) {
 						if(error){
 							console.log("The group was not found", error);
@@ -128,7 +129,6 @@ deleteGroup: function(groupId, res){
 							res.send(new Error("user already exists in group"));
 						}
 						else{
-							console.log("about to push user into group!")
 							group.users.push(user);
 							group.save(function(err){
 								// console.log("Current members of group", group.users);
@@ -147,13 +147,12 @@ deleteGroup: function(groupId, res){
 		})
 
 	},
+	//to delete user from a group
 	deleteUserFromGroup: function(userID, groupID, res){
-        console.log("deleteUserFromGroup", userID, groupID);
         Model.group.findOne({"_id": groupID}, function(error, group){
 					console.log("found", group);
 					var arrOfUsers = group.users;
 					var userToRemove = arrOfUsers.indexOf(userID);
-					//console.log(groupToRemove);
 					group.users.splice(userToRemove, 1);
 					Model.user.findOne({"_id": userID}, function(err, user){
 						if(err){res.send(new Error("user not found"))}
@@ -161,7 +160,6 @@ deleteGroup: function(groupId, res){
 						user.groups.splice(groupToRemove, 1);
 						group.save(function(err){
 							if(err){res.send("group not updated", err)}
-							console.log("actual group", group)
 							user.save(function(err){
 								if(err){res.send("user not updated")}
 								console.log("user is updated");
@@ -169,9 +167,6 @@ deleteGroup: function(groupId, res){
 							})
 						})
 					})
-					// console.log(arrOfUsers);
-
-
         })
     },
 
