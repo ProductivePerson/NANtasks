@@ -139,6 +139,7 @@ app.post('/api/createGroup', function(req, res){
 	taskFuncs.createGroup(groupName, username, res);
 })
 
+//to delete group
 app.post('/api/deleteGroup', function(req, res){
 	/* proper format of request:
 		{
