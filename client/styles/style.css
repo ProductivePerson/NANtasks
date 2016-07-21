@@ -1,0 +1,62 @@
+.main-logo, .task-input {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.main-logo {
+  margin: 10px;
+}
+
+.task-input {
+  font-size: 24px;
+  padding: 20px;
+  width: 500px;
+}
+.task-list {
+  text-align: center;
+}
+.task {
+  margin: 3px;
+  border-color: #fff;
+  font-size: 24px;
+  height: 50px;
+  border: 1px solid #eee;
+}
+.sidebar {
+  float: left;
+  width: 17%;
+  background-color: grey;
+}
+
+.sidebar-constants {
+  margin: 0 auto;
+  text-decoration: none;
+  margin-left: 15px;
+  color: black;
+}
+
+.sidebar-projects {
+  border-bottom: 1px solid;
+  margin-right: 5px;
+}
+
+.add-project-icon {
+  max-width: 100%
+}
+
+.projects-list {
+  list-style-type: none;
+}
+
+.current-user-greeting {
+  font-weight: bold;
+}
+
+.auth-error {
+  visibility: hidden;
+}
+
+.show-auth-error {
+  color: red;
+  visibility: visible;
+}

@@ -1,0 +1,98 @@
+<!-- the ui-view directive is where our templates will be loaded into when navigated to -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Fridge</a>
+      <div class="current-user-greeting-container" ng-controller="TasksController">
+        <p class="current-user-greeting">Welcome, {{ cUser }}</p>
+      </div>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right" ng-controller="AuthController">
+        <!-- clicking on 'logout' redirects user to login and removes session token from local storage -->
+        <li><a href="#" ng-click="signout()">Signout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <h3>Fuck Yeah!</h3>
+
+<!-- SIDEBAR THAT CONTAINS THE GENERAL TASKS, PROJ LIST, AND ADD NEW PROJ FEATURE -->
+<div class="sidebar" style="background-color:#eee; height:500px;">
+  <nav class="sidebar-constants">
+    <!-- PROJECTS FEATURE -->
+    <div class="projects-container" ng-controller="GroupController">
+      <br><br>
+      <a ng-click="relocate()" class="sidebar-general">Back to my Tasks</a>
+      <br><br>
+      <h3>Users</h3>
+      <br><br>
+      <form class="new-proj-form" ng-submit="addUser(userToGroup)">
+        <input type="text" placeholder="Add New User" ng-model="userToGroup">
+        <!-- <input type="button" value="Add Project"> -->
+      </form>
+      <br>
+      <div class="projects-list-container">
+        <ul class="projects-list">
+          <li ng-repeat="user in usersInGroup">
+            {{user.username}}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- PROJECTS FEATURE -->
+
+  </nav>
+</div>
+
+<div class="col-sm-9">
+  <div ng-controller="GroupController">
+    <div class="current-proj-name-container">
+      <h3>{{projNameDisplay}}</h3>
+    </div>
+
+    <div class="task-input">
+      <form class="form-inline" ng-submit="onSubmit(input)">
+        <div class="form-group">
+          <input type="text" ng-model="input" class="form-control" placeholder="Add New Task">
+        </div>
+        <button type="submit" class="btn btn-default" value="Add Task">Add Task</button>
+      </form>
+    </div>
+    <h3>Current Tasks</h3>
+    <div class="task-list">
+      <div class="task" ng-repeat="task in allGroupTasks | filter:{completed:false} | orderBy: '-created_at':true">
+
+          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+
+        <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
+        <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
+      </div>
+    </div>
+
+    <hr style="background-color:black; height:5px;">
+
+    <h3>Completed Tasks</h3>
+    <div class="task-list">
+      <div class="task" ng-repeat="task in allGroupTasks | filter:{completed:true} | orderBy: '-created_at':true">
+          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+        <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- style="position: absolute; left: -9999px; width: 1px; height: 1px;" -->
+<!-- tabindex="-1" -->
