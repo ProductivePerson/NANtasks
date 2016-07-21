@@ -1,4 +1,4 @@
-var Model = require('./database.js');
+var db = require('./database.js');
 var jwt  = require('jwt-simple');
 
 
@@ -9,7 +9,7 @@ var taskFuncs = {
 	// checks to see if user exists if so return the userId for that user.
 
 	checkUser: function(userName, res) {
-		Model.user.findOne({"username": userName}, function(err, found){
+		db.user.findOne({"username": userName}, function(err, found){
 			if(err) {
 				console.log("username not found");
 			}else {
@@ -19,7 +19,7 @@ var taskFuncs = {
 	},
 
 	getUserTasks: function(user, res){
-		Model.task.find({"owner": user}, function(err, tasks){
+		db.task.find({"owner": user}, function(err, tasks){
 			if(err){
 				console.log("tasks not fetched", err);
 			}
@@ -29,7 +29,7 @@ var taskFuncs = {
 	},
 
 	addTask: function(task, res) {
-		var newTask = new Model.task(task);
+		var newTask = new db.task(task);
 		newTask.save(function(err){
 			if(err) {
 				console.log("error:", err);
@@ -40,7 +40,7 @@ var taskFuncs = {
 	},
 
 	deleteTask: function(id, res){
-		Model.task.remove({"_id": id}, function (err) {
+		db.task.remove({"_id": id}, function (err) {
 			if(err){
 				console.log("Error: ", err)
 			}
@@ -49,7 +49,7 @@ var taskFuncs = {
 
 	},
 	completeTask: function(id, res){
-		Model.task.update({"_id": id}, {
+		db.task.update({"_id": id}, {
 			completed: true
 
 		}, function(err){
@@ -63,7 +63,7 @@ var taskFuncs = {
 	editTask: function(id, editedTask, res){
 		// updates the task name based on the request body and the id associated with it.
 
-		Model.task.update({"_id": id}, {
+		db.task.update({"_id": id}, {
 			name: editedTask
 		}, function(err, obj) {
 			if(err) {
@@ -78,15 +78,15 @@ var taskFuncs = {
 
 	//creates group and adds group to user
 	createGroup: function(groupName, username, res){
-		var group = new Model.group({"name": groupName});
+		var group = new db.group({"name": groupName});
 
-		Model.user.update({"username": username}, {$push:{"groups": group}},
+		db.user.update({"username": username}, {$push:{"groups": group}},
 		function(err){
 			if(err){
 				res.send(new Error("new group not saved to user document"))
 			}
 
-			Model.user.findOne({"username": username}, function(err, user){
+			db.user.findOne({"username": username}, function(err, user){
 				group.users.push(user);
 				group.save(function(err){
 					if(err){res.send("group not created", err)}
@@ -99,13 +99,13 @@ var taskFuncs = {
 
 	// adds User to Group AND adds group to user
 	addUserToGroup: function(username, groupId, res){
-		Model.user.findOne({"username": username}, function(err, user){
+		db.user.findOne({"username": username}, function(err, user){
 			if(err){
 				res.send("User not found", err)
 			}
 
 			if(!user.length) {
-				Model.group.findOne({"_id": groupId}, function(error, group) {
+				db.group.findOne({"_id": groupId}, function(error, group) {
 					if(error){
 						console.log("The group was not found", error);
 					}
@@ -136,7 +136,7 @@ var taskFuncs = {
 
 	//get users for current group
 	getUsers: function(groupID, res){
-		Model.group.findOne({"_id": groupID}).populate('users').exec(function(err, group){
+		db.group.findOne({"_id": groupID}).populate('users').exec(function(err, group){
 			if(err){
 				console.log("group not found", err);
 			}
@@ -147,7 +147,7 @@ var taskFuncs = {
 
 	//get tasks for group
 	collectGroupTasks: function(groupId, res){
-		Model.task.find({"group": groupId}, function(error, tasks) {
+		db.task.find({"group": groupId}, function(error, tasks) {
 			if(error){
 				console.log("Group tasks weren't retrieved", error);
 			}
@@ -158,7 +158,7 @@ var taskFuncs = {
 
 	//get groups that user is a member of
 	getGroups: function(username, res) {
-		Model.user.findOne({"username": username}).populate('groups').exec(function(error, user) {
+		db.user.findOne({"username": username}).populate('groups').exec(function(error, user) {
 			if(error) {
 				console.log("Error in finding groups", error);
 			}else {
@@ -173,7 +173,7 @@ var taskFuncs = {
 	},
 
 	deleteUserFromGroup: function(userID, groupID, res){
-		Model.group.findOne({"_id": groupID}, function(error, group){
+		db.group.findOne({"_id": groupID}, function(error, group){
 			group.users.remove({"_id": userID}), function(err){
 				if(err){
 					console.log("there was an error removing the user from group");
@@ -188,13 +188,13 @@ var taskFuncs = {
 	/* AUTHENTICATION FUNCTIONS */
 
 	signup: function(newUser, res, next) {
-		Model.user.find({"username": newUser.username}, function(err, user){
+		db.user.find({"username": newUser.username}, function(err, user){
 			if(err) {
 				console.log("Error: ", error);
 			}
 			if(!user.length) { //if a user is not found, an empty array is returned
 				console.log("user does NOT already exist");
-				var user = new Model.user(newUser);
+				var user = new db.user(newUser);
 				user.save(function(err){
 					if(err) {
 						console.log("new user not saved", err);
@@ -213,7 +213,7 @@ var taskFuncs = {
 	},
 
 	signin: function(reqUser, res, next){
-		Model.user.find({"username": reqUser.username}, function(err, user){
+		db.user.find({"username": reqUser.username}, function(err, user){
 			if(err){ //if error in query
 				next("Error: ", error);
 			}
@@ -244,7 +244,7 @@ var taskFuncs = {
 		else {
 			var user = jwt.decode(token, 'secret');
 			console.log("Decoded user:", user);
-			Model.user.find(user, function(err, user){
+			db.user.find(user, function(err, user){
 				if(err){
 					next("Error: ", error);
 				}
