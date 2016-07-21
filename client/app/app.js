@@ -1,3 +1,4 @@
+//Declares the main module, which will control the view.
 angular.module('fridge', [
   'tasks',
   'groups',
@@ -6,7 +7,12 @@ angular.module('fridge', [
   'auth'
 ])
 
-// ui router for single-page application
+//configures ui router for single-page application.  Endpoints:
+  // "/tasks"
+  // "/signin"
+  // "/signup"
+  // "/groups"
+//This is all pretty straightforward stuff, ppl.
 .config(function($stateProvider, $urlRouterProvider, $httpProvider){
   $urlRouterProvider.otherwise("/signin");
   $stateProvider
@@ -29,13 +35,14 @@ angular.module('fridge', [
       templateUrl: 'app/groups/groups.html',
       controller: 'GroupController'
     })
-
+    //This call to .interceptors.push is how Angular adds middleware
+    //to AJAX requests.  In this case we are using the "AttachTokens" 
+    //factory, which is defined below.
     $httpProvider.interceptors.push('AttachTokens');
 })
 
-// CODE BELOW WILL BE USED FOR ATTACHING TOKENS TO EACH USER SESSION
-// AND TO VERIFY THAT A USER IS AUTHORIZED EVERY TIME THE ROUTE CHANGES
-
+//Code below is used to attach tokens to each user session.  It also 
+//verifies that a user is authorised every time the route changes.
 .factory('AttachTokens', function ($window) {
   var attach = {
     request: function (object) {
@@ -49,6 +56,11 @@ angular.module('fridge', [
   };
   return attach;
 })
+
+//as best I can tell, this call to .run adds an event listener on the 
+//scope of "app" which fires when the route changes.  It just says that
+//if the desired route requires authentication, and the user is not 
+//logged in, then redirect to "/signin."
 .run(function ($rootScope, $location, Auth) {
   $rootScope.$on('$routeChangeStart', function (evt, next, current) {
     if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
