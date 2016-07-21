@@ -1,5 +1,5 @@
 var express = require('express');
-var taskFuncs = require('./helpers.js');
+var taskFuncs = require('./backend/helpers.js');
 var bodyParser = require('body-parser');
 var app = express();
 
@@ -9,10 +9,6 @@ app.use(bodyParser.json());
 
 console.log(__dirname + "/node_modules");
 
-
-app.listen(process.env.PORT || 3000, function(){
-  console.log('Server is running');
-});
 
 /* AUTHENTICATION ROUTES  */
 
@@ -182,8 +178,8 @@ app.post('/api/group/getUsers', function(req, res){
 
 
 app.post('/api/group/deleteUser', function(req, res){
-	
-	taskFuncs.deleteUserFromGroup(req.body.id, req.body.groupID, res); 
+
+	taskFuncs.deleteUserFromGroup(req.body.id, req.body.groupID, res);
 })
 
 
@@ -197,7 +193,7 @@ app.post('/api/group/getTasks', function(req, res) {
 
 	*/
 	var group = req.body.groupID;
-	taskFuncs.collectGroupTasks(group, res); 
+	taskFuncs.collectGroupTasks(group, res);
 })
 
 
@@ -213,6 +209,11 @@ app.post('/api/user/check', function(req, res, next) {
 })
 
 
+// var app = require('./server-config.js')
+
+app.listen(process.env.PORT || 3000, function(){
+  console.log('Server is running on port 3000');
+});
 
 
 module.exports = app;
