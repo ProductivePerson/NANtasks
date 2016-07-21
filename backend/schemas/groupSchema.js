@@ -9,4 +9,4 @@ var groupSchema = new Schema({
 });
 // contains an array of user ids along with an array of task ids
 
-module.exports = groupSchema
+module.exports = groupSchema;
