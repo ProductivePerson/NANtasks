@@ -13,8 +13,8 @@ var taskSchema = new Schema({
 });
 
 taskSchema.pre('save', function(next){
-  if(!this.group){this.group =  this.owner}
-    next();
-})
+  if(!this.group){this.group =  this.owner;}
+  next();
+});
 
-module.exports = taskSchema
+module.exports = taskSchema;
