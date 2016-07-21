@@ -28,7 +28,7 @@ angular.module('fridge', [
       url: '/groups',
       templateUrl: 'app/groups/groups.html',
       controller: 'GroupController'
-    })
+    });
 
     $httpProvider.interceptors.push('AttachTokens');
 })

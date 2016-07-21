@@ -12,14 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.5.7",
     "angular-ui-router": "^0.3.1",
-    "body-parser": "^1.5.2",
     "bcrypt": "latest",
-    "ejs": "^2.4.2",
-    "jwt-simple": "^0.2.0",
-    "express": "^4.14.0",
+    "body-parser": "^1.5.2",
     "bootstrap": "^3.3.6",
+    "ejs": "^2.4.2",
+    "express": "^4.14.0",
     "jquery": "1.9.1",
+    "jwt-simple": "^0.2.0",
     "mongodb": "^2.2.1",
     "mongoose": "^4.5.3"
   }
