@@ -1,6 +1,6 @@
 angular.module('groups', [])
 
-.controller('GroupController', function($scope, $window, $location, Tasks, Auth, Proj){
+.controller('GroupController', function($scope, $window, $location, Tasks, Auth, Proj, UserTransfer){
 
   angular.extend($scope, Tasks, Auth, Proj);
   $scope.groupName = $window.localStorage.getItem('group.name');
@@ -12,6 +12,7 @@ angular.module('groups', [])
   $scope.getMembersData = function(){
     Proj.fetchProjectMembers(group).then(function(resp){
       $scope.usersInGroup = resp.data;
+      UserTransfer.setUsers($scope.usersInGroup);
     });
   }
   $scope.getMembersData();
@@ -24,8 +25,8 @@ angular.module('groups', [])
     Proj.fetchAllProjectTasks(group).then(function(resp){
     //  console.log(resp)
       $scope.allGroupTasks = resp.data;
-    })
-  }
+    });
+  };
     //initial function call
   $scope.getGroupData();
 
@@ -35,7 +36,7 @@ angular.module('groups', [])
         $scope.userToGroup = null;
         $scope.getMembersData();
     });
-  }
+  };
   $scope.onSubmit = function(input){
       var taskData = {
           name: input,
@@ -50,27 +51,25 @@ angular.module('groups', [])
         $scope.input = null;
         //update task list
         $scope.getGroupData();
-      })
-  }
+      });
+  };
   $scope.deleteById = function(task){
     $scope.deleteTask({id: task}, function(resp){
       $scope.getGroupData();
     });
-  }
+  };
   $scope.complete = function(task){
     $scope.completeTask({id: task}, function(resp){
       $scope.getGroupData();
     });
-  }
+  };
   $scope.relocate = function () {
         $location.path('/tasks');
-  }
+  };
   $scope.deleteUserFromGroup = function(userID){
     console.log(userID, group);
     Proj.deleteUserByID({id: userID, groupID: group}).then(function(resp){
       $scope.getMembersData();
     });
-  }
-
-
-})
+  };
+});

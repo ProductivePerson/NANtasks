@@ -11,7 +11,7 @@ angular.module('services', [])
    }).then(function(resp){
      //console.log("data from server", resp.data);
      return resp.data;
-   })
+   });
  };
 
   var getUserTasks = function(user){
@@ -22,7 +22,7 @@ angular.module('services', [])
       }).then(function(resp){
         //console.log(resp.data);
         return resp.data;
-      })
+      });
     };
 
     var fetchAllTasks = function(){
@@ -31,7 +31,7 @@ angular.module('services', [])
           url: '/api/tasks'
         }).then(function(resp){
           return resp.data;
-        })
+        });
       };
 
   var addTask = function(task, callback){
@@ -41,14 +41,14 @@ angular.module('services', [])
       url: '/api/tasks',
       data: task
     }).then(function(resp){
-      console.log("here is response from server", resp)
+      console.log("here is response from server", resp);
       //using callback to update our tasks ONLY after respond
       callback(resp);
       //return resp;
     })
     .catch(function(err){
       console.err("Error adding task: ", err);
-    })
+    });
   };
 
   var deleteTask = function(task, callback){
@@ -61,7 +61,7 @@ angular.module('services', [])
        callback(resp);
      }).catch(function(err){
        console.log('Error', err);
-     })
+     });
    };
 
    var completeTask = function(task, callback){
@@ -74,7 +74,7 @@ angular.module('services', [])
        callback(resp);
      }).catch(function(err){
        console.log('Error', err);
-     })
+     });
    };
 
   return {
@@ -84,8 +84,7 @@ angular.module('services', [])
     deleteTask:deleteTask,
     completeTask: completeTask,
     isUser:isUser
-  }
-
+  };
 })
 
 .factory('Proj', function($http){
@@ -103,7 +102,7 @@ angular.module('services', [])
     })
     .catch(function(err){
       console.error(err);
-    })
+    });
   };
 
   var deleteGroupbyID = function(group){
@@ -118,7 +117,7 @@ angular.module('services', [])
        //callback(resp);
      }).catch(function(err){
        console.log('Error', err);
-     })
+     });
    };
 
   var addUserToGroup = function(user){
@@ -129,12 +128,12 @@ angular.module('services', [])
     })
     .then(function(resp){
       //return group object sent back from server
-      console.log('get response on add new user', resp)
+      console.log('get response on add new user', resp);
       return resp;
     })
     .catch(function(err){
       console.error(err);
-    })
+    });
   };
 
   var deleteUserByID = function(user){
@@ -150,7 +149,7 @@ angular.module('services', [])
       //callback(resp);
     }).catch(function(err){
       console.log('Error', err);
-    })
+    });
   };
 
   var fetchAllProjectTasks = function(id){
@@ -163,8 +162,8 @@ angular.module('services', [])
       return resp;
     })
     .catch(function(err){
-      console.error("Error fetching all group tasks: ", err)
-    })
+      console.error("Error fetching all group tasks: ", err);
+    });
   };
   var fetchProjectMembers = function(id){
     return $http({
@@ -176,8 +175,8 @@ angular.module('services', [])
       return resp;
     })
     .catch(function(err){
-      console.error(err)
-    })
+      console.error(err);
+    });
   };
   var getUserProjectsList = function(user){
     return $http({
@@ -189,9 +188,18 @@ angular.module('services', [])
       return resp;
     })
     .catch(function(err){
-      console.error(err)
-    })
+      console.error(err);
+    });
   };
+
+  var getAllUsers = function(){
+    return $http({
+          method: 'GET',
+          url: '/api/getAllUsers'
+        }).then(function(resp){
+          return resp.data;
+        })
+      };
 
   return {
     addUserToGroup:addUserToGroup,
@@ -200,7 +208,8 @@ angular.module('services', [])
     deleteUserByID:deleteUserByID,
     fetchAllProjectTasks: fetchAllProjectTasks,
     fetchProjectMembers: fetchProjectMembers,
-    getUserProjectsList: getUserProjectsList
+    getUserProjectsList: getUserProjectsList,
+    getAllUsers: getAllUsers
   }
 })
 
@@ -213,8 +222,7 @@ angular.module('services', [])
     })
     .then(function (resp) {
       return resp.data;
-    })
-
+    });
   };
 
   var signup = function (user) {
@@ -225,7 +233,7 @@ angular.module('services', [])
     })
     .then(function (resp) {
       return resp.data;
-    })
+    });
   };
 
   var isAuth = function () {
@@ -240,11 +248,21 @@ angular.module('services', [])
     $location.path('/signin');
   };
 
-
   return {
     signin: signin,
     signup: signup,
     isAuth: isAuth,
     signout: signout
   };
+})
+.service("UserTransfer", function() {
+  var users = [];
+  return {
+    setUsers: function(list) {
+      users = list;
+    },
+    getUsers: function() {
+      return users;
+    }
+  }
 });

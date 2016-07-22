@@ -1,10 +1,11 @@
-<div id='signup'>
+<!DOCTYPE html>
+<div id="signup">
   <h1>signup</h1>
-  <form name="signupForm" ng-submit='signup()' novalidate>
+  <form name="signupForm" ng-submit="signup()" novalidate>
     <p style="font-weight:bold">
       Username
     </p>
-    <input type='text' ng-class="{'error': signupForm.user.$invalid && !signupForm.user.$pristine}" ng-model='user.username' name='user' ng-minlength="6" ng-maxlength="14" required>
+    <input type="text" ng-class="{'error': signupForm.user.$invalid && !signupForm.user.$pristine}" ng-model="user.username" name="user" ng-minlength="6" ng-maxlength="14" required>
     <p ng-show="signupForm.user.$invalid && !signupForm.user.$pristine">Username must be greater than 5 characters</p>
 
     <p class="auth-error">
@@ -14,7 +15,7 @@
     <p style="font-weight:bold">
       Password
     </p>
-    <input type="password" ng-class="{'error': signupForm.pass.$invalid && !signupForm.pass.$pristine}" ng-model='user.password' name='pass' ng-minlength="6" ng-maxlength="14" required>
+    <input type="password" ng-class="{'error': signupForm.pass.$invalid && !signupForm.pass.$pristine}" ng-model="user.password" name="pass" ng-minlength="6" ng-maxlength="14" required>
     <p ng-show="signupForm.pass.$invalid && !signupForm.pass.$pristine">Password must be greater than 6 characters</p>
 
     <br>
