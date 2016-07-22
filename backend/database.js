@@ -36,7 +36,8 @@ var UserSchema = new Schema({
   password: { type: String, required: true },
 	token: String,
 	tasks: [{type: Schema.Types.ObjectId, ref: 'Task'}],
-	groups: [{type: Schema.Types.ObjectId, ref: 'Group'}]
+	groups: [{type: Schema.Types.ObjectId, ref: 'Group'}],
+  avatar: [Number]
 });
 
 
