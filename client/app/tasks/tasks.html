@@ -74,7 +74,7 @@
 
             {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }} 
 
-            <span class="task-label-creator" ng-repeat="user in getUserById(task.creator)">(from {{ user }} )</span>
+            <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
 
           <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
           <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>

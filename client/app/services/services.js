@@ -193,6 +193,15 @@ angular.module('services', [])
     })
   };
 
+  var getAllUsers = function(){
+    return $http({
+          method: 'GET',
+          url: '/api/getAllUsers'
+        }).then(function(resp){
+          return resp.data;
+        })
+      };
+
   return {
     addUserToGroup:addUserToGroup,
     addProject: addProject,
@@ -200,7 +209,8 @@ angular.module('services', [])
     deleteUserByID:deleteUserByID,
     fetchAllProjectTasks: fetchAllProjectTasks,
     fetchProjectMembers: fetchProjectMembers,
-    getUserProjectsList: getUserProjectsList
+    getUserProjectsList: getUserProjectsList,
+    getAllUsers: getAllUsers
   }
 })
 

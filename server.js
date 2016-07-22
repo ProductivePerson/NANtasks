@@ -221,7 +221,12 @@ app.post('/api/user/check', function(req, res, next) {
  taskFuncs.checkUser(req.body.user, res, next);
 })
 
+//USER ROUTES
 
+app.get('/api/getAllUsers', function(req, res){
+	console.log("getting all users");
+	taskFuncs.getAllUsers(res);
+})
 
 
 module.exports = app;

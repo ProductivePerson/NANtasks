@@ -170,6 +170,16 @@ deleteGroup: function(groupId, res){
         })
     },
 
+  //dump all users.
+  getAllUsers: function(res) {
+  	Model.user.find({},  function(err, users) {
+      if(err){
+				console.log("ya dun fucked up son", err);
+			}
+			res.send(users);
+  	})
+  },
+
 	//get users for current group
 	getUsers: function(groupID, res){
 		Model.group.findOne({"_id": groupID}).populate('users').exec(function(err, group){

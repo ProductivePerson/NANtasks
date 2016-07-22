@@ -4,6 +4,15 @@ angular.module('tasks', [])
 
   angular.extend($scope, Tasks, Auth, Proj);
   $scope.usersInGroup = [];
+
+  //get all users, then shove them in usersInGroup.
+  Proj.getAllUsers()
+    .then(function(res) {
+      if ($scope.usersInGroup.length < 1) {
+        $scope.usersInGroup = res;
+      }
+    })
+
   $scope.cUser = $window.localStorage.getItem('user.fridge');
   $scope.uID = $window.localStorage.getItem('id.fridge');
   if(!Auth.isAuth()) { Auth.signout()}
@@ -37,7 +46,7 @@ angular.module('tasks', [])
       }
       console.log(user.username);
     })
-    return [username];
+    return username;
   }
 
   //add new project to sidebar list and to db
