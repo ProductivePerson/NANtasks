@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var SALT_WORK_FACTOR = 10;
 
 mongoose.connect('mongodb://needsclosure:needsclosure1@ds021289.mlab.com:21289/needsclosure');
+// mongoose.connect('mongodb://timtimClark:nancat5@ds027215.mlab.com:27215/nantasks');
 
 
 //TASK SCHEMA
@@ -13,6 +14,7 @@ var taskSchema = new Schema({
   createdAt: Date,
   dueDate: Date,
   completed: Boolean,
+  creator: {type: Schema.Types.ObjectId, ref: 'User'},
   group: {type: String, ref: 'Group'}
 });
 

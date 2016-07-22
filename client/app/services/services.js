@@ -247,4 +247,15 @@ angular.module('services', [])
     isAuth: isAuth,
     signout: signout
   };
+})
+.service("UserTransfer", function() {
+  var users = [];
+  return {
+    setUsers: function(list) {
+      users = list;
+    },
+    getUsers: function() {
+      return users;
+    }
+  }
 });

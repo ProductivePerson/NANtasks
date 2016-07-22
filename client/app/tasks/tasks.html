@@ -62,9 +62,6 @@
       <form class="form-inline" ng-submit="onSubmit(input, toUser)">
         <div class="form-group">
           <input type="text" ng-model="input" class="form-control" placeholder="Add New Task">
-          <select value="group">
-            <option ng-repeat="task in allTasks">{{ task.name }}</option>
-          </select>
           <input type="text" ng-model="toUser" class="form-control" placeholder="To User(optional)">
         </div>
         <button type="submit" class="btn btn-default" value="Add Task">Add Task</button>
@@ -75,7 +72,9 @@
       <div class="task-list-pending">
         <div class="task task-pending" ng-repeat="task in allTasks | filter:{completed:false} | orderBy: '-created_at':true">
 
-            {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+            {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }} 
+
+            <span class="task-label-creator" ng-repeat="user in getUserById(task.creator)">(from {{ user }} )</span>
 
           <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
           <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
