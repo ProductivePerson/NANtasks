@@ -114,7 +114,8 @@ angular.module('tasks', [])
           createdAt: new Date(),
           group: projID,
           completed: false,
-          owner:userID
+          owner:userID,
+          creator: $scope.uID,
         };
       Tasks.addTask(taskData, function(resp){
         //clear input after task has been added
@@ -125,13 +126,13 @@ angular.module('tasks', [])
     }
 
     $scope.onSubmit = function(input, toUser){
-    if(toUser){
+    if(toUser){ // if optional 'user' field is specified
       //if we assigning task to user, we need to make async call to check if this user exist ni db and send userid to the client
-      $scope.isUser({user: toUser}).then(function(resp){
-        $scope.addTaskTo(input, resp);
+      $scope.isUser({user: toUser}).then(function(resp){  //check for user.
+        $scope.addTaskTo(input, resp);  //add task to DB with target user as owner
       })
-    } else {
-       $scope.addTaskTo(input, $scope.uID);
+    } else { //else if 'user' field is blank 
+       $scope.addTaskTo(input, $scope.uID);  //add task to DB with current user as owner
     }
   }
 
