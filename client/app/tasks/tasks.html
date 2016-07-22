@@ -75,6 +75,7 @@
             {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }} 
 
             <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
+            <div class="task-label-owner"> Assigned to: {{ getUserById(task.owner) }} </div>
 
           <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
           <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
@@ -89,7 +90,11 @@
 
     <div class="task-list">
       <div class="task" ng-repeat="task in allTasks | filter:{completed:true} | orderBy: '-created_at':true">
+
           {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+
+          <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
+
         <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
 
       </div>

@@ -31,9 +31,9 @@ app.get('/api/signedin', function(req, res, next){
 
 //to sign in user
 app.post('/api/signin', function(req, res, next){
-	console.log("sign-in request received");
 	// format of request object is same as signup
 	var user  = req.body;
+	console.log("sign-in request received. this is user: ", user);
 	taskFuncs.signin(user, res, next);
 
 });
