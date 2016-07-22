@@ -28,6 +28,10 @@ angular.module('fridge', [
       url: '/groups',
       templateUrl: 'app/groups/groups.html',
       controller: 'GroupController'
+    }).state('/profile', {
+      url: '/profile',
+      templateUrl: 'app/profile/profile.html',
+      controller: 'ProfileController'
     })
 
     $httpProvider.interceptors.push('AttachTokens');
