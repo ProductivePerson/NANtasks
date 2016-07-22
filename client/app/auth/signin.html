@@ -1,13 +1,14 @@
-<div class='signin'>
+<!DOCTYPE html>
+<div class="signin">
   <h1>signin</h1>
   <br>
-  <form name="signinForm" class="input" ng-submit='signin()'  novalidate>
+  <form name="signinForm" class="input" ng-submit="signin()"  novalidate>
 
     <p style="font-weight:bold">
       Username
     </p>
     <input ng-class="{'error': signinForm.user.$invalid && !signinForm.user.$pristine}"
-    type='text' ng-model='user.username' name='user'  ng-minlength="5" ng-maxlength="15"
+    type="text" ng-model="user.username" name="user"  ng-minlength="5" ng-maxlength="15"
     required>
     <p class="signin-error" ng-show="signinForm.user.$invalid && !signinForm.user.$pristine">
       Username invalid
@@ -18,7 +19,7 @@
       Password
     </p>
     <input type="password" ng-class="{'error': signinForm.pass.$invalid && !signinForm.pass.$pristine}"
-    ng-model='user.password' name='pass' ng-minlength="1" required>
+    ng-model="user.password" name="pass" ng-minlength="1" required>
     <p ng-show="signinForm.pass.$invalid && !signinForm.pass.$pristine">
       Password Invalid
     </p>
