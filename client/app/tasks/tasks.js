@@ -1,8 +1,18 @@
 angular.module('tasks', [])
 
-.controller('TasksController', function($scope, $window, $location, Tasks, Auth, Proj){
+.controller('TasksController', function($scope, $window, $location, Tasks, Auth, Proj, UserTransfer){
 
   angular.extend($scope, Tasks, Auth, Proj);
+  $scope.usersInGroup = [];
+
+  //get all users, then shove them in usersInGroup.
+  Proj.getAllUsers()
+    .then(function(res) {
+      if ($scope.usersInGroup.length < 1) {
+        $scope.usersInGroup = res;
+      }
+    })
+
   $scope.cUser = $window.localStorage.getItem('user.fridge');
   $scope.uID = $window.localStorage.getItem('id.fridge');
   if(!Auth.isAuth()) { Auth.signout()}
@@ -27,6 +37,17 @@ angular.module('tasks', [])
   $scope.members = [];
   //array of all projects, which is formatted as a list in sidebar
   $scope.allProjects = [];
+
+  $scope.getUserById = function(id) {
+    var username;
+    $scope.usersInGroup.forEach(function(user) {
+      if (user._id === id) {
+        username = user.username;
+      }
+      console.log(user.username);
+    })
+    return username;
+  }
 
   //add new project to sidebar list and to db
   $scope.addProject = function(){
@@ -105,7 +126,6 @@ angular.module('tasks', [])
     //initial function call
     $scope.getData();
 
-
     //add Task to user(current user or assign to another user)
     $scope.addTaskTo = function(input, userID){
       var projID = $window.localStorage.getItem('proj.id.fridge');
@@ -151,4 +171,13 @@ angular.module('tasks', [])
       $scope.loadProjList();
     });
   }
+
+  //set watch statement
+  $scope.$watch(function () { return UserTransfer.getUsers(); }, function (newValue, oldValue) {
+        if (newValue != null) {
+            console.log("Users in group: ", newValue);
+            //update Controller2's usersInGroup value based on the "UserTransfer" service's value.
+            $scope.usersInGroup= newValue;
+        }
+    }, true);
 })

@@ -1,6 +1,6 @@
 angular.module('groups', [])
 
-.controller('GroupController', function($scope, $window, $location, Tasks, Auth, Proj){
+.controller('GroupController', function($scope, $window, $location, Tasks, Auth, Proj, UserTransfer){
 
   angular.extend($scope, Tasks, Auth, Proj);
   $scope.groupName = $window.localStorage.getItem('group.name');
@@ -12,6 +12,7 @@ angular.module('groups', [])
   $scope.getMembersData = function(){
     Proj.fetchProjectMembers(group).then(function(resp){
       $scope.usersInGroup = resp.data;
+      UserTransfer.setUsers($scope.usersInGroup);
     });
   }
   $scope.getMembersData();
