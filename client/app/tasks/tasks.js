@@ -11,11 +11,11 @@ angular.module('tasks', [])
       if ($scope.usersInGroup.length < 1) {
         $scope.usersInGroup = res;
       }
-    })
+    });
 
   $scope.cUser = $window.localStorage.getItem('user.fridge');
   $scope.uID = $window.localStorage.getItem('id.fridge');
-  if(!Auth.isAuth()) { Auth.signout()}
+  if(!Auth.isAuth()) { Auth.signout();}
   //will be submitted to server in POST request body containing the new task input data
     //when ready to send requests to server, add "Tasks" controller as function input variable
   $scope.allTasks = [];
@@ -45,9 +45,9 @@ angular.module('tasks', [])
         username = user.username;
       }
       console.log(user.username);
-    })
+    });
     return username;
-  }
+  };
 
   //add new project to sidebar list and to db
   $scope.addProject = function(){
@@ -64,7 +64,7 @@ angular.module('tasks', [])
     Proj.getUserProjectsList($scope.cUser)
     .then(function(projList){
       $scope.allProjects = projList.data;
-    })
+    });
   };
   //func is called as soon as page loads
   $scope.loadProjList();
@@ -113,7 +113,7 @@ angular.module('tasks', [])
     $window.localStorage.setItem('group.id', id);
     $window.localStorage.setItem('group.name', group);
     $location.path('/groups');
-  }
+  };
 
   //function to get all existed tasks from db
   $scope.getData = function(){
@@ -121,8 +121,8 @@ angular.module('tasks', [])
     $scope.all.then(function(resp){
     //  console.log(resp)
       $scope.allTasks = resp;
-    })
-  }
+    });
+  };
     //initial function call
     $scope.getData();
 
@@ -142,42 +142,42 @@ angular.module('tasks', [])
         $scope.input = null;
         //update task list
         $scope.getData();
-      })
-    }
+      });
+    };
 
     $scope.onSubmit = function(input, toUser){
     if(toUser){ // if optional 'user' field is specified
       //if we assigning task to user, we need to make async call to check if this user exist ni db and send userid to the client
       $scope.isUser({user: toUser}).then(function(resp){  //check for user.
         $scope.addTaskTo(input, resp);  //add task to DB with target user as owner
-      })
-    } else { //else if 'user' field is blank 
+      });
+    } else { //else if 'user' field is blank
        $scope.addTaskTo(input, $scope.uID);  //add task to DB with current user as owner
     }
-  }
+  };
 
   $scope.deleteById = function(task){
     $scope.deleteTask({id: task}, function(resp){
       $scope.getData();
     });
-  }
+  };
   $scope.complete = function(task){
     $scope.completeTask({id: task}, function(resp){
       $scope.getData();
     });
-  }
+  };
   $scope.deleteGroup = function(groupID){
     Proj.deleteGroupbyID({id: groupID}).then(function(proj){
       $scope.loadProjList();
     });
-  }
+  };
 
   //set watch statement
   $scope.$watch(function () { return UserTransfer.getUsers(); }, function (newValue, oldValue) {
-        if (newValue != null) {
+        if (newValue !== null) {
             console.log("Users in group: ", newValue);
             //update Controller2's usersInGroup value based on the "UserTransfer" service's value.
             $scope.usersInGroup= newValue;
         }
     }, true);
-})
+});
