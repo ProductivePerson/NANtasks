@@ -5,6 +5,7 @@ var jwt  = require('jwt-simple');
 var taskFuncs = {
 
 /* TASK FUNCTIONS */
+<<<<<<< HEAD
 	
 	// checks to see if user exists if so return the userId for that user. 
 
@@ -15,6 +16,24 @@ var taskFuncs = {
 		  }else {
         res.send(found._id);
 		  }
+=======
+
+	// checks to see if user exists if so return the userId for that user.
+
+ checkUser: function(userName, res, next) {
+		Model.user.findOne({"username": userName}, function(err, found){
+		  if(err) {
+		  	console.log("ERROR:", err);
+        res.send(new Error(err));
+		  }
+		  if(found) {
+		  	console.log("user exists", found);
+        res.send(found._id);
+		  }
+		  else{
+		  	next(new Error("username does not exist"));
+		  }
+>>>>>>> tempDev
 		})
   },
 
@@ -40,7 +59,11 @@ var taskFuncs = {
 	},
 
 	deleteTask: function(id, res){
+<<<<<<< HEAD
 		Model.task.remove({"_id": id}, function (err) { 
+=======
+		Model.task.remove({"_id": id}, function (err) {
+>>>>>>> tempDev
 			if(err){
 				console.log("Error: ", err)
 			}
@@ -61,15 +84,26 @@ var taskFuncs = {
 	},
 
 	editTask: function(id, editedTask, res){
+<<<<<<< HEAD
 		// updates the task name based on the request body and the id associated with it. 
 		
+=======
+		// updates the task name based on the request body and the id associated with it.
+
+>>>>>>> tempDev
 		Model.task.update({"_id": id}, {
 			name: editedTask
 		}, function(err, obj) {
 			if(err) {
+<<<<<<< HEAD
 				console.log("task update failed", err); 
 			}
 			res.send("task was updated", obj); 
+=======
+				console.log("task update failed", err);
+			}
+			res.send("task was updated", obj);
+>>>>>>> tempDev
 		});
 	},
 
@@ -80,7 +114,11 @@ var taskFuncs = {
 createGroup: function(groupName, username, res){
 	var group = new Model.group({"name": groupName});
 
+<<<<<<< HEAD
 		Model.user.update({"username": username}, {$push:{"groups": group}}, 
+=======
+		Model.user.update({"username": username}, {$push:{"groups": group}},
+>>>>>>> tempDev
 			function(err){
 				if(err){
 					res.send(new Error("new group not saved to user document"))
@@ -94,6 +132,7 @@ createGroup: function(groupName, username, res){
 					})
 				})
 		})
+<<<<<<< HEAD
 	
 },
 
@@ -128,12 +167,83 @@ createGroup: function(groupName, username, res){
 			}
 			else{
 				res.send(new Error("user not found"));
+=======
+
+},
+
+//delete group
+deleteGroup: function(groupId, res){
+	Model.group.remove({"_id": groupId}, function (err) {
+		if(err){
+			console.log("Error: ", err)
+		}
+		res.send("group removed");
+	});
+},
+
+	// adds User to Group AND adds group to user
+	addUserToGroup: function(username, groupId, res, next){
+		Model.user.findOne({"username": username}, function(err, user){
+			if(err){
+				next("User not found", err)
+			}
+			if(user) {
+					Model.group.findOne({"_id": groupId}, function(error, group) {
+						if(error){
+							console.log("The group was not found", error);
+						}
+						if(group.users.indexOf(user._id) >= 0) {
+							console.log("user already exists in group");
+							res.send(new Error("user already exists in group"));
+						}
+						else{
+							group.users.push(user);
+							group.save(function(err){
+								// console.log("Current members of group", group.users);
+								user.groups.push(group);
+								user.save(function(err){
+									res.send(group);
+								})
+							})
+						}
+					})
+			}
+			else{
+				next(new Error("user not found"));
+>>>>>>> tempDev
 			}
 
 		})
 
+<<<<<<< HEAD
 	}, 
 	
+=======
+	},
+	//to delete user from a group
+	deleteUserFromGroup: function(userID, groupID, res){
+        Model.group.findOne({"_id": groupID}, function(error, group){
+					console.log("found", group);
+					var arrOfUsers = group.users;
+					var userToRemove = arrOfUsers.indexOf(userID);
+					group.users.splice(userToRemove, 1);
+					Model.user.findOne({"_id": userID}, function(err, user){
+						if(err){res.send(new Error("user not found"))}
+						var groupToRemove = user.groups.indexOf(groupID);
+						user.groups.splice(groupToRemove, 1);
+						group.save(function(err){
+							if(err){res.send("group not updated", err)}
+							user.save(function(err){
+								if(err){res.send("user not updated")}
+								console.log("user is updated");
+								res.send("user and group have been updated");
+							})
+						})
+					})
+        })
+    },
+
+>>>>>>> tempDev
 	//get users for current group
 	getUsers: function(groupID, res){
 		Model.group.findOne({"_id": groupID}).populate('users').exec(function(err, group){
@@ -149,10 +259,17 @@ createGroup: function(groupName, username, res){
 	collectGroupTasks: function(groupId, res){
 		Model.task.find({"group": groupId}, function(error, tasks) {
 			if(error){
+<<<<<<< HEAD
 				console.log("Group tasks weren't retrieved", error); 
 			}
 			console.log("successfully retrieved group tasks:", tasks);
 			res.send(tasks); 
+=======
+				console.log("Group tasks weren't retrieved", error);
+			}
+			console.log("successfully retrieved group tasks:", tasks);
+			res.send(tasks);
+>>>>>>> tempDev
 		});
 	},
 
@@ -166,6 +283,7 @@ createGroup: function(groupName, username, res){
 					res.send("user does not have any groups");
 				}else {
 					console.log("groups: ", user.groups);
+<<<<<<< HEAD
 					res.send(user.groups); 
 				}
 			}
@@ -181,6 +299,12 @@ createGroup: function(groupName, username, res){
 					console.log("user removed from group"); 
 			}
 		})
+=======
+					res.send(user.groups);
+				}
+			}
+		})
+>>>>>>> tempDev
 	},
 
 
@@ -234,13 +358,21 @@ createGroup: function(groupName, username, res){
 				})
 			}
 		})
+<<<<<<< HEAD
 	}, 
+=======
+	},
+>>>>>>> tempDev
 
 	checkAuth: function(req, res, next){
 		var token = req.headers['x-access-token'];
     if (!token) {
       next(new Error('No token'));
+<<<<<<< HEAD
     } 
+=======
+    }
+>>>>>>> tempDev
     else {
       var user = jwt.decode(token, 'secret');
       console.log("Decoded user:", user);

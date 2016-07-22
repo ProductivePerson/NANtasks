@@ -3,6 +3,10 @@ angular.module('groups', [])
 .controller('GroupController', function($scope, $window, $location, Tasks, Auth, Proj){
 
   angular.extend($scope, Tasks, Auth, Proj);
+<<<<<<< HEAD
+=======
+  $scope.groupName = $window.localStorage.getItem('group.name');
+>>>>>>> tempDev
   var group = $window.localStorage.getItem('group.id');
   var id = $window.localStorage.getItem('id.fridge');
   $scope.usersInGroup = [];
@@ -64,6 +68,15 @@ angular.module('groups', [])
   $scope.relocate = function () {
         $location.path('/tasks');
   }
+<<<<<<< HEAD
+=======
+  $scope.deleteUserFromGroup = function(userID){
+    console.log(userID, group);
+    Proj.deleteUserByID({id: userID, groupID: group}).then(function(resp){
+      $scope.getMembersData();
+    });
+  }
+>>>>>>> tempDev
 
 
 })

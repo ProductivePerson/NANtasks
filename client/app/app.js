@@ -28,7 +28,11 @@ angular.module('fridge', [
       url: '/groups',
       templateUrl: 'app/groups/groups.html',
       controller: 'GroupController'
+<<<<<<< HEAD
     });
+=======
+    })
+>>>>>>> tempDev
 
     $httpProvider.interceptors.push('AttachTokens');
 })

@@ -139,6 +139,20 @@ app.post('/api/createGroup', function(req, res){
 	taskFuncs.createGroup(groupName, username, res);
 })
 
+<<<<<<< HEAD
+=======
+//to delete group
+app.post('/api/deleteGroup', function(req, res){
+	/* proper format of request:
+		{
+			"id": "5783ec2a12cda2db6ce7ac91" <-- id of group to be deleted
+		}
+	*/
+	console.log("request received at deleteGroup", req.body.id);
+	taskFuncs.deleteGroup(req.body.id, res);
+})
+
+>>>>>>> tempDev
 //add user to group
 app.put('/api/group/addUser', function(req, res, next){
 	console.log("request received at addUserToGroup");
@@ -180,10 +194,15 @@ app.post('/api/group/getUsers', function(req, res){
 	taskFuncs.getUsers(req.body.groupID, res);
 })
 
+<<<<<<< HEAD
 
 app.post('/api/group/deleteUser', function(req, res){
 	
 	taskFuncs.deleteUserFromGroup(req.body.id, req.body.groupID, res); 
+=======
+app.post('/api/group/deleteUser', function(req, res){
+    taskFuncs.deleteUserFromGroup(req.body.id, req.body.groupID, res);
+>>>>>>> tempDev
 })
 
 
@@ -197,7 +216,11 @@ app.post('/api/group/getTasks', function(req, res) {
 
 	*/
 	var group = req.body.groupID;
+<<<<<<< HEAD
 	taskFuncs.collectGroupTasks(group, res); 
+=======
+	taskFuncs.collectGroupTasks(group, res);
+>>>>>>> tempDev
 })
 
 
