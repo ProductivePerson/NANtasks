@@ -34,7 +34,12 @@ angular.module('fridge', [
       url: '/groups',
       templateUrl: 'app/groups/groups.html',
       controller: 'GroupController'
-    });
+    }).state('/profile', {
+      url: '/profile',
+      templateUrl: 'app/profile/profile.html',
+      controller: 'ProfileController'
+    })
+
     //This call to .interceptors.push is how Angular adds middleware
     //to AJAX requests.  In this case we are using the "AttachTokens"
     //factory, which is defined below.
