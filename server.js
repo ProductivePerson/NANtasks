@@ -1,7 +1,17 @@
-var app = require('./backend/server_config.js');
+var express = require('express');
+var taskFuncs = require('./helpers.js');
+var bodyParser = require('body-parser');
+var app = express();
+
+app.use(express.static(__dirname + "/client"));
+app.use(express.static(__dirname + "/node_modules"));
+app.use(bodyParser.json());
+
+console.log(__dirname + "/node_modules");
+
 
 app.listen(process.env.PORT || 3000, function(){
-  console.log('Server is running on port ', process.env.PORT || '3000');
+  console.log('Server is running');
 });
 
 /* AUTHENTICATION ROUTES  */
