@@ -20,14 +20,14 @@ app.post('/api/signup', function(req, res, next){
 	*/
 	var newUser = req.body;
 	taskFuncs.signup(newUser, res, next);
-})
+});
 
 //to check if user is signed in
 app.get('/api/signedin', function(req, res, next){
 	//see helpers.js for format of request. It checks the req.headers['x-access-token']
 	console.log("signedIn request received");
 	taskFuncs.checkAuth(req, res, next);
-})
+});
 
 //to sign in user
 app.post('/api/signin', function(req, res, next){
@@ -36,7 +36,7 @@ app.post('/api/signin', function(req, res, next){
 	var user  = req.body;
 	taskFuncs.signin(user, res, next);
 
-})
+});
 
 
 /* TASK ROUTES */
@@ -52,7 +52,7 @@ app.post('/api/user/usertasks', function(req, res){
 	console.log("request received at usertasks for: ", req.body.user);
 	var user = req.body.user;
 	taskFuncs.getUserTasks(user, res);
-})
+});
 
  /*
 	PROPER FORMAT OF TASK
@@ -75,7 +75,7 @@ app.post('/api/tasks', function(req, res){
 	// var group = req.body.groupID;
 	//  added username
 	taskFuncs.addTask(task, res);
-})
+});
 
 //to delete task
 app.post('/api/tasks/delete', function(req, res){
@@ -86,14 +86,14 @@ app.post('/api/tasks/delete', function(req, res){
 	*/
 	console.log("request received at deleteTask", req.body.id);
 	taskFuncs.deleteTask(req.body.id, res);
-})
+});
 
 //to mark task as complete
 app.put('/api/tasks', function(req, res){
 	//format of request same as delete request
 	console.log("request received at completeTask for:", req.body.id);
 	taskFuncs.completeTask(req.body.id, res);
-})
+});
 
 //to edit name of task
 app.put('/api/tasks/edit', function(req, res, next){
@@ -107,7 +107,7 @@ app.put('/api/tasks/edit', function(req, res, next){
 	*/
 	console.log("task was updated", req.body);
 	taskFuncs.editTask(req.body._id, req.body.name, res, next);
-})
+});
 
 
 
@@ -129,7 +129,7 @@ app.post('/api/createGroup', function(req, res){
 	var username = req.body.username;
 	var groupName = req.body.groupName;
 	taskFuncs.createGroup(groupName, username, res);
-})
+});
 
 //to delete group
 app.post('/api/deleteGroup', function(req, res){
@@ -140,7 +140,7 @@ app.post('/api/deleteGroup', function(req, res){
 	*/
 	console.log("request received at deleteGroup", req.body.id);
 	taskFuncs.deleteGroup(req.body.id, res);
-})
+});
 
 //add user to group
 app.put('/api/group/addUser', function(req, res, next){
@@ -153,7 +153,7 @@ app.put('/api/group/addUser', function(req, res, next){
 	*/
 
 	taskFuncs.addUserToGroup(req.body.username, req.body.groupID, res, next);
-})
+});
 
 
 //get groups for a user
@@ -168,7 +168,7 @@ app.post('/api/user/getGroups', function(req,res) {
 	var user = req.body.username;
 
 	taskFuncs.getGroups(user, res);
-})
+});
 
 
 //get users for group
@@ -181,11 +181,11 @@ app.post('/api/group/getUsers', function(req, res){
 	*/
 
 	taskFuncs.getUsers(req.body.groupID, res);
-})
+});
 
 app.post('/api/group/deleteUser', function(req, res){
     taskFuncs.deleteUserFromGroup(req.body.id, req.body.groupID, res);
-})
+});
 
 
 // get tasks for a group
@@ -199,7 +199,7 @@ app.post('/api/group/getTasks', function(req, res) {
 	*/
 	var group = req.body.groupID;
 	taskFuncs.collectGroupTasks(group, res);
-})
+});
 
 
 //*  USER ROUTE  *//
@@ -211,9 +211,6 @@ app.post('/api/user/check', function(req, res, next) {
 	 }
  */
  taskFuncs.checkUser(req.body.user, res, next);
-})
-
-
-
+});
 
 module.exports = app;

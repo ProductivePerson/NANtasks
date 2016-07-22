@@ -14,7 +14,7 @@ angular.module('auth', [])
       })
       .catch(function (error) {
         var result = document.getElementsByClassName("auth-error");
-        var wrappedResult = angular.element(result)
+        var wrappedResult = angular.element(result);
         wrappedResult.addClass('show-auth-error');
       });
   };
@@ -31,7 +31,7 @@ angular.module('auth', [])
       .catch(function (error) {
         console.error("Signup error: ", error);
         var result = document.getElementsByClassName("auth-error");
-        var wrappedResult = angular.element(result)
+        var wrappedResult = angular.element(result);
         wrappedResult.addClass('show-auth-error');
       });
   };
