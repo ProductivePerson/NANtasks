@@ -19,10 +19,10 @@ var taskSchema = new Schema({
 taskSchema.pre('save', function(next) {
   console.log("checking pre-save task feature!");
   if(!this.group){
-    this.group =  this.owner
+    this.group =  this.owner;
   }
     next();
-})
+});
 
 var Task = mongoose.model('Task', taskSchema);
 

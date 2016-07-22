@@ -1,31 +1,25 @@
-var Model = require('./database.js');
+var db = require('./database.js');
 var jwt  = require('jwt-simple');
 
 
 var taskFuncs = {
 
-/* TASK FUNCTIONS */
+	/* TASK FUNCTIONS */
 
 	// checks to see if user exists if so return the userId for that user.
 
- checkUser: function(userName, res, next) {
-		Model.user.findOne({"username": userName}, function(err, found){
-		  if(err) {
-		  	console.log("ERROR:", err);
-        res.send(new Error(err));
-		  }
-		  if(found) {
-		  	console.log("user exists", found);
-        res.send(found._id);
-		  }
-		  else{
-		  	next(new Error("username does not exist"));
-		  }
-		})
-  },
+	checkUser: function(userName, res) {
+		db.user.findOne({"username": userName}, function(err, found){
+			if(err) {
+				console.log("username not found");
+			}else {
+				res.send(found._id);
+			}
+		});
+	},
 
 	getUserTasks: function(user, res){
-		Model.task.find({"owner": user}, function(err, tasks){
+		db.task.find({"owner": user}, function(err, tasks){
 			if(err){
 				console.log("tasks not fetched", err);
 			}
@@ -35,27 +29,27 @@ var taskFuncs = {
 	},
 
 	addTask: function(task, res) {
-		var newTask = new Model.task(task);
+		var newTask = new db.task(task);
 		newTask.save(function(err){
 			if(err) {
 				console.log("error:", err);
 			}
 			console.log("Task Added!", newTask);
 			res.send(newTask); //sends back added task
-		})
+		});
 	},
 
 	deleteTask: function(id, res){
-		Model.task.remove({"_id": id}, function (err) {
+		db.task.remove({"_id": id}, function (err) {
 			if(err){
-				console.log("Error: ", err)
+				console.log("Error: ", err);
 			}
 			res.send("task removed");
 		});
 
 	},
 	completeTask: function(id, res){
-		Model.task.update({"_id": id}, {
+		db.task.update({"_id": id}, {
 			completed: true
 
 		}, function(err){
@@ -69,7 +63,7 @@ var taskFuncs = {
 	editTask: function(id, editedTask, res){
 		// updates the task name based on the request body and the id associated with it.
 
-		Model.task.update({"_id": id}, {
+		db.task.update({"_id": id}, {
 			name: editedTask
 		}, function(err, obj) {
 			if(err) {
@@ -80,110 +74,82 @@ var taskFuncs = {
 	},
 
 
-/* GROUP FUNCTIONS */
+	/* GROUP FUNCTIONS */
 
-//creates group and adds group to user
-createGroup: function(groupName, username, res){
-	var group = new Model.group({"name": groupName});
+	//creates group and adds group to user
+	createGroup: function(groupName, username, res){
+		var group = new db.group({"name": groupName});
 
-		Model.user.update({"username": username}, {$push:{"groups": group}},
-			function(err){
-				if(err){
-					res.send(new Error("new group not saved to user document"))
-				}
-
-				Model.user.findOne({"username": username}, function(err, user){
-					group.users.push(user);
-					group.save(function(err){
-						if(err){res.send("group not created", err)}
-						res.send(group);
-					})
-				})
-		})
-
-},
-
-//delete group
-deleteGroup: function(groupId, res){
-	Model.group.remove({"_id": groupId}, function (err) {
-		if(err){
-			console.log("Error: ", err)
-		}
-		res.send("group removed");
-	});
-},
-
-	// adds User to Group AND adds group to user
-	addUserToGroup: function(username, groupId, res, next){
-		Model.user.findOne({"username": username}, function(err, user){
+		db.user.update({"username": username}, {$push:{"groups": group}},
+		function(err){
 			if(err){
-				next("User not found", err)
-			}
-			if(user) {
-					Model.group.findOne({"_id": groupId}, function(error, group) {
-						if(error){
-							console.log("The group was not found", error);
-						}
-						if(group.users.indexOf(user._id) >= 0) {
-							console.log("user already exists in group");
-							res.send(new Error("user already exists in group"));
-						}
-						else{
-							group.users.push(user);
-							group.save(function(err){
-								// console.log("Current members of group", group.users);
-								user.groups.push(group);
-								user.save(function(err){
-									res.send(group);
-								})
-							})
-						}
-					})
-			}
-			else{
-				next(new Error("user not found"));
+				res.send(new Error("new group not saved to user document"));
 			}
 
-		})
+			db.user.findOne({"username": username}, function(err, user){
+				group.users.push(user);
+				group.save(function(err){
+					if(err) {
+						res.send("group not created", err);
+					}
+					res.send(group);
+				});
+			});
+		});
 
 	},
-	//to delete user from a group
-	deleteUserFromGroup: function(userID, groupID, res){
-        Model.group.findOne({"_id": groupID}, function(error, group){
-					console.log("found", group);
-					var arrOfUsers = group.users;
-					var userToRemove = arrOfUsers.indexOf(userID);
-					group.users.splice(userToRemove, 1);
-					Model.user.findOne({"_id": userID}, function(err, user){
-						if(err){res.send(new Error("user not found"))}
-						var groupToRemove = user.groups.indexOf(groupID);
-						user.groups.splice(groupToRemove, 1);
+
+	// adds User to Group AND adds group to user
+	addUserToGroup: function(username, groupId, res){
+		db.user.findOne({"username": username}, function(err, user){
+			if(err){
+				res.send("User not found", err);
+			}
+
+			if(!user.length) {
+				db.group.findOne({"_id": groupId}, function(error, group) {
+					if(error){
+						console.log("The group was not found", error);
+					}
+					console.log("group");
+					if(group.users.indexOf(user._id) >= 0) {
+						console.log("user already exists in group");
+						res.send(new Error("user already exists in group"));
+					}
+					else{
+						group.users.push(user);
 						group.save(function(err){
-							if(err){res.send("group not updated", err)}
+							console.log("Current members of group", group.users);
+							user.groups.push(group);
 							user.save(function(err){
-								if(err){res.send("user not updated")}
-								console.log("user is updated");
-								res.send("user and group have been updated");
-							})
-						})
-					})
-        })
-    },
+								res.send(group);
+							});
+						});
+					}
+				});
+			}
+			else{
+				res.send(new Error("user not found"));
+			}
+
+		});
+
+	},
 
 	//get users for current group
 	getUsers: function(groupID, res){
-		Model.group.findOne({"_id": groupID}).populate('users').exec(function(err, group){
+		db.group.findOne({"_id": groupID}).populate('users').exec(function(err, group){
 			if(err){
 				console.log("group not found", err);
 			}
 			console.log("Members of group:", group.users);
-			res.send(group.users) //will return an array of user objects in the group
-		})
+			res.send(group.users); //will return an array of user objects in the group
+		});
 	},
 
 	//get tasks for group
 	collectGroupTasks: function(groupId, res){
-		Model.task.find({"group": groupId}, function(error, tasks) {
+		db.task.find({"group": groupId}, function(error, tasks) {
 			if(error){
 				console.log("Group tasks weren't retrieved", error);
 			}
@@ -194,7 +160,7 @@ deleteGroup: function(groupId, res){
 
 	//get groups that user is a member of
 	getGroups: function(username, res) {
-		Model.user.findOne({"username": username}).populate('groups').exec(function(error, user) {
+		db.user.findOne({"username": username}).populate('groups').exec(function(error, user) {
 			if(error) {
 				console.log("Error in finding groups", error);
 			}else {
@@ -205,40 +171,51 @@ deleteGroup: function(groupId, res){
 					res.send(user.groups);
 				}
 			}
-		})
+		});
+	},
+
+	deleteUserFromGroup: function(userID, groupID, res){
+		db.group.findOne({"_id": groupID}, function(error, group){
+			group.users.remove({"_id": userID}), function(err) {
+				if (err) {
+					console.log("there was an error removing the user from group");
+				}
+				console.log("user removed from group");
+			}
+		});
 	},
 
 
 
-/* AUTHENTICATION FUNCTIONS */
+	/* AUTHENTICATION FUNCTIONS */
 
 	signup: function(newUser, res, next) {
-		Model.user.find({"username": newUser.username}, function(err, user){
+		db.user.find({"username": newUser.username}, function(err, user){
 			if(err) {
 				console.log("Error: ", error);
 			}
 			if(!user.length) { //if a user is not found, an empty array is returned
 				console.log("user does NOT already exist");
-				var user = new Model.user(newUser);
+				var user = new db.user(newUser);
 				user.save(function(err){
 					if(err) {
 						console.log("new user not saved", err);
 					}
-				console.log("new user saved");
-				var token = jwt.encode(user, 'secret'); //create new token
-        res.json({"token": token, "user": {"id": user._id, "username": user.username}}); //send new token and user object
-			})
+					console.log("new user saved");
+					var token = jwt.encode(user, 'secret'); //create new token
+					res.json({"token": token, "user": {"id": user._id, "username": user.username}}); //send new token and user object
+				});
 
 			}
 			else {
 				console.log("user already exists: ", user);
 				next(new Error("user already exists"));
 			}
-		})
+		});
 	},
 
 	signin: function(reqUser, res, next){
-		Model.user.find({"username": reqUser.username}, function(err, user){
+		db.user.find({"username": reqUser.username}, function(err, user){
 			if(err){ //if error in query
 				next("Error: ", error);
 			}
@@ -249,41 +226,41 @@ deleteGroup: function(groupId, res){
 				user[0].comparePassword(reqUser.password, function(err, isMatch){
 					if(err) {throw err;}
 					if(!isMatch){
-						next(new Error("Incorrect password")) //will send an error if incorrect password
+						next(new Error("Incorrect password")); //will send an error if incorrect password
 					}
 					else{
 						console.log("password correct!");
 						var token = jwt.encode(user[0], 'secret'); //create new token
-            res.json({"token": token, "user": {"id": user[0]._id, "username": user[0].username}}); //send new token and user object
+						res.json({"token": token, "user": {"id": user[0]._id, "username": user[0].username}}); //send new token and user object
 					}
-				})
+				});
 			}
-		})
+		});
 	},
 
 	checkAuth: function(req, res, next){
 		var token = req.headers['x-access-token'];
-    if (!token) {
-      next(new Error('No token'));
-    }
-    else {
-      var user = jwt.decode(token, 'secret');
-      console.log("Decoded user:", user);
-      Model.user.find(user, function(err, user){
-      	if(err){
-      		next("Error: ", error);
-      	}
-      	if(!user.length){ //user not found
-      		res.status(401).send();
-      	}
-      	else{ //token decoded and user found in database
-      		console.log("user authenticated")
-      		res.status(200).send();
-      	}
-      });
-    }
+		if (!token) {
+			next(new Error('No token'));
+		}
+		else {
+			var user = jwt.decode(token, 'secret');
+			console.log("Decoded user:", user);
+			db.user.find(user, function(err, user){
+				if(err){
+					next("Error: ", error);
+				}
+				if(!user.length){ //user not found
+					res.status(401).send();
+				}
+				else{ //token decoded and user found in database
+					console.log("user authenticated");
+					res.status(200).send();
+				}
+			});
+		}
 	}
-}
+};
 
 
 module.exports = taskFuncs;
