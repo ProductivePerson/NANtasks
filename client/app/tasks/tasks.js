@@ -115,6 +115,13 @@ angular.module('tasks', [])
     console.log(task);
     if (task.creator === $scope.uID) {
       task.poked = true;
+      //need to update on server.
+      //delete current task.
+      $scope.deleteById(task.id);
+      //add modified task.
+      Task.addTask(task, function(resp) {
+        console.log("response from poke function: ", resp);
+      })
     } else {
       alert("you do not have the authority to poke that user!");
     }
