@@ -56,6 +56,17 @@ app.post('/api/user/usertasks', function(req, res){
 	taskFuncs.getUserTasks(user, res);
 });
 
+app.post('/api/user/createdtasks', function(req, res){
+	//  proper format of request
+	// {
+	// 	"user": "5787b4442cb0dadd096e94d7" // this is the same ID you received when the user signs in
+	// }
+
+	console.log("request received at usertasks for: ", req.body.user);
+	var user = req.body.user;
+	taskFuncs.getCreatedTasks(user, res);
+});
+
  /*
 	PROPER FORMAT OF TASK
 	{

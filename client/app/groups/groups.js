@@ -84,6 +84,8 @@ angular.module('groups', [])
       $scope.getGroupData();
     });
   };
+
+  //click handler for poke event
   $scope.poke = function(task, isOn){
     var verify;
     console.log(isOn)
@@ -100,6 +102,8 @@ angular.module('groups', [])
       alert("you do not have the authority to poke that user!");
     }
   };
+
+
   $scope.relocate = function () {
         $location.path('/tasks');
   };
