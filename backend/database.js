@@ -87,4 +87,14 @@ bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 var User = mongoose.model('User', UserSchema);
 
 
-module.exports = {user: User, task: Task, group: Group};
+
+//this schema will set up an object with all of the logged in user
+var singedInUserSchema = new Schema({
+	username: { type: String, required: true, index: { unique: true } }
+
+});
+
+var signedInUser = mongoose.model('singnedInUser', singedInUserSchema);
+
+
+module.exports = {user: User, inUser: signedInUser, task: Task, group: Group};
