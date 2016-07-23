@@ -204,6 +204,13 @@ app.post('/api/group/getTasks', function(req, res) {
 
 
 //*  USER ROUTE  *//
+
+//get all users from the db.
+app.get('/api/getAllUsers', function(req, res){
+	console.log("getting all users");
+	taskFuncs.getAllUsers(res);
+})
+
 // Check if user exists
 app.post('/api/user/check', function(req, res, next) {
  /*PROPER FORMAT OF REQUEST
