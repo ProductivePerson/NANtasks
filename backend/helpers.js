@@ -232,6 +232,7 @@ var taskFuncs = {
 			}
 			if(!user.length) { //if a user is not found, an empty array is returned
 				console.log("user does NOT already exist");
+
 				var user = new db.user(newUser);
 				user.save(function(err){
 					if(err) {
@@ -266,10 +267,45 @@ var taskFuncs = {
 					}
 					else{
 						console.log("password correct!");
+
+						/**
+							this will find out if the user is already signed in, if he/she is
+							then nothing will happen if he/she is not then a new document with that
+							user's username will be created
+						*/
+						db.inUser.find({username: user[0]['username']},function(err,inUser){
+							if(err){
+								console.log("Signed in user err ",err);
+							}
+
+							//user is NOT signed in, if the inUser array is empty
+							if(!inUser.length){
+								console.log("User NOT signed in ")
+								var newSignedInUser = new db.inUser({username: user[0]['username']})
+								newSignedInUser.save(function(err){
+									if(err){
+										console.log("Signed in Users error ",err);
+									}
+								});
+							}
+						});
+
 						var token = jwt.encode(user[0], 'secret'); //create new token
 						res.json({"token": token, "user": {"id": user[0]._id, "username": user[0].username}}); //send new token and user object
 					}
 				});
+			}
+		});
+	},
+
+	signout: function(reqUser, res, next){
+		db.inUser.findOne({"username": reqUser.username}, function(err, found){
+			if(err) {
+				console.log("username not found");
+			}else {
+				console.log("found the user you want to delete ", found)
+				found.remove()
+				res.status(200).send();
 			}
 		});
 	},
