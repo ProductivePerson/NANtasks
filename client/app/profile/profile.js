@@ -5,7 +5,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   $scope.uID = $window.localStorage.getItem('id.fridge');
   $scope.password = "password";
   console.log('profile stuff', $scope.username, $scope.uID, $scope.password);
-  $scope.items = ['username', 'password'];
+  $scope.items = [$scope.username, 'password'];
 
   $scope.animationsEnabled = true;
 
