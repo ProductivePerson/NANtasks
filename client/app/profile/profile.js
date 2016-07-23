@@ -1,7 +1,8 @@
 angular.module('profile', ['ui.bootstrap','ngAnimate'])
 .controller('ProfileController', function($scope, $uibModal, $log, $window) {
 
-  $scope.username = $window.localStorage.getItem('user.fridge');
+  var username = $window.localStorage.getItem('user.fridge');
+  $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
   $scope.uID = $window.localStorage.getItem('id.fridge');
   $scope.password = "password";
   console.log('profile stuff', $scope.username, $scope.uID, $scope.password);
@@ -35,8 +36,11 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
 })
 
-.controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, items) {
+.controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items) {
 
+  var username = $window.localStorage.getItem('user.fridge');
+  $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
+  $scope.uID = $window.localStorage.getItem('id.fridge');
   $scope.items = items;
   $scope.selected = {
     item: $scope.items[0]
