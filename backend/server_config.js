@@ -5,7 +5,7 @@ var app = express();
 
 app.use(express.static(__dirname + "/../client"));
 app.use(express.static(__dirname + "/../node_modules"));
-app.use(express.static(__dirname + "/../assets/catheads"));
+app.use("/assets", express.static(__dirname + "/../assets/"));
 app.use(bodyParser.json());
 /* AUTHENTICATION ROUTES  */
 
@@ -210,7 +210,7 @@ app.post('/api/group/getTasks', function(req, res) {
 app.get('/api/getAllUsers', function(req, res){
 	console.log("getting all users");
 	taskFuncs.getAllUsers(res);
-})
+});
 
 // Check if user exists
 app.post('/api/user/check', function(req, res, next) {
