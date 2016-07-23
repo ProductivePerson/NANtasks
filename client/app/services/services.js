@@ -17,7 +17,7 @@ angular.module('services', [])
   var updateUsername = function(username) {
     return $http({
       method: 'PUT',
-      url: '/api/user/updateUsername',
+      url: '/api/user/username',
       data: username
     }).then(function(resp) {
       return resp.data;
@@ -29,7 +29,7 @@ angular.module('services', [])
   var updatePassword = function(password) {
     return $http({
       method: 'PUT',
-      url: '/api/user/updatePassword',
+      url: '/api/user/password',
       data: password
     }).then(function(resp) {
       return resp.data;
@@ -41,7 +41,7 @@ angular.module('services', [])
   var updateAvatar = function(avatar) {
     return $http({
       method: 'PUT',
-      url: '/assets/catheads',
+      url: '/assets/avatar',
       data: avatar
     }).then(function(resp) {
       return resp;
