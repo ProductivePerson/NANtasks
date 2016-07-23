@@ -5,9 +5,10 @@ var app = express();
 
 app.use(express.static(__dirname + "/../client"));
 app.use(express.static(__dirname + "/../node_modules"));
+app.use(express.static(__dirname + "/../assets/catheads"));
 app.use(bodyParser.json());
-
 /* AUTHENTICATION ROUTES  */
+
 
 	//add new user
 app.post('/api/signup', function(req, res, next){
@@ -31,9 +32,10 @@ app.get('/api/signedin', function(req, res, next){
 
 //to sign in user
 app.post('/api/signin', function(req, res, next){
+	console.log("sign-in request received");
 	// format of request object is same as signup
 	var user  = req.body;
-	console.log("sign-in request received. this is user: ", user);
+  console.log("\n SERVER_CONFIG: app.post: user is: ", user);
 	taskFuncs.signin(user, res, next);
 
 });
@@ -203,6 +205,13 @@ app.post('/api/group/getTasks', function(req, res) {
 
 
 //*  USER ROUTE  *//
+
+//get all users from the db.
+app.get('/api/getAllUsers', function(req, res){
+	console.log("getting all users");
+	taskFuncs.getAllUsers(res);
+})
+
 // Check if user exists
 app.post('/api/user/check', function(req, res, next) {
  /*PROPER FORMAT OF REQUEST
@@ -212,5 +221,8 @@ app.post('/api/user/check', function(req, res, next) {
  */
  taskFuncs.checkUser(req.body.user, res, next);
 });
+
+
+
 
 module.exports = app;
