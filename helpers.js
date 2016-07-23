@@ -21,7 +21,7 @@ var taskFuncs = {
 		  else{
 		  	next(new Error("username does not exist"));
 		  }
-		})
+		});
   },
 
 	getUserTasks: function(user, res){
@@ -42,13 +42,13 @@ var taskFuncs = {
 			}
 			console.log("Task Added!", newTask);
 			res.send(newTask); //sends back added task
-		})
+		});
 	},
 
 	deleteTask: function(id, res){
 		Model.task.remove({"_id": id}, function (err) {
 			if(err){
-				console.log("Error: ", err)
+				console.log("Error: ", err);
 			}
 			res.send("task removed");
 		});
