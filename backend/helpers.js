@@ -1,4 +1,5 @@
 var db = require('./database.js');
+// var Model = require('./backend/database.js');
 var jwt  = require('jwt-simple');
 
 
@@ -19,7 +20,7 @@ var taskFuncs = {
 	},
 
 	getAllUsers: function(res) {
-  	Model.user.find({},  function(err, users) {
+  	db.user.find({},  function(err, users) {
       if(err){
 				console.log("ya dun fucked up son", err);
 			}
