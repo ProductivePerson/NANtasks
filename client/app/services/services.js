@@ -325,12 +325,17 @@ angular.module('services', [])
     return !!$window.localStorage.getItem('com.fridge');
   };
 
-  var signout = function () {
-    $window.localStorage.removeItem('user.fridge');
-    $window.localStorage.removeItem('id.fridge');
-    $window.localStorage.removeItem('com.fridge');
+  var signout = function (user) {
 
-    $location.path('/signin');
+    return $http({
+      method: 'POST',
+      url: '/api/signout',
+      data: user
+    })
+    .then(function (resp) {
+      return resp.data;
+    });
+
   };
 
   return {

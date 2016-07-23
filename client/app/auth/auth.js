@@ -33,9 +33,16 @@ angular.module('auth', [])
         wrappedResult.addClass('show-auth-error');
       });
   };
-  //When 'logout' is clicked, signout() function removes token from local storage
+  //When 'Signout' is clicked, signout() function removes token from local storage
   //and redirects user to /signin
   $scope.signout = function(){
-    Auth.signout();
+    Auth.signout({username: $window.localStorage['user.fridge']})
+      .then(function(){
+        $window.localStorage.removeItem('user.fridge');
+        $window.localStorage.removeItem('id.fridge');
+        $window.localStorage.removeItem('com.fridge');
+        $location.path('/signin');
+      })
+
   };
 });

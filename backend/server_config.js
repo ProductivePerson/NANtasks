@@ -23,13 +23,6 @@ app.post('/api/signup', function(req, res, next){
 	taskFuncs.signup(newUser, res, next);
 });
 
-//to check if user is signed in
-app.get('/api/signedin', function(req, res, next){
-	//see helpers.js for format of request. It checks the req.headers['x-access-token']
-	console.log("signedIn request received");
-	taskFuncs.checkAuth(req, res, next);
-});
-
 //to sign in user
 app.post('/api/signin', function(req, res, next){
 	console.log("sign-in request received");
@@ -40,6 +33,13 @@ app.post('/api/signin', function(req, res, next){
 
 });
 
+//sign user out and delete the signed in user document
+app.post('/api/signout', function(req, res, next){
+	//see helpers.js for format of request. It checks the req.headers['x-access-token']
+	console.log("signout request received");
+	var user = req.body
+	taskFuncs.signout(user, res, next);
+});
 
 /* TASK ROUTES */
 
