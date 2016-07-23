@@ -38,6 +38,17 @@ var taskFuncs = {
 		});
 	},
 
+  //same as above, but this returns all tasks created by user.
+	getCreatedTasks: function(user, res){
+		db.task.find({"creator": user}, function(err, tasks){
+			if(err){
+				console.log("tasks not fetched", err);
+			}
+			console.log("tasks", tasks);
+			res.send(tasks); //sends back array of tasks
+		});
+	},
+
 	addTask: function(task, res) {
 		var newTask = new db.task(task);
 		newTask.save(function(err){
@@ -69,7 +80,8 @@ var taskFuncs = {
 			res.send("task marked as complete");
 		});
 	},
-  
+
+  //toggles the poked key of the db object.
 	pokeTask: function(id, res){
 		var toggle;
 		db.task.find({"_id": id}, function(err, docs) {

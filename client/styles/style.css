@@ -60,3 +60,7 @@
   color: red;
   visibility: visible;
 }
+
+.task-label-poked {
+  background-color: #ffcccc;
+}
