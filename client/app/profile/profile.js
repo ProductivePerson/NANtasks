@@ -10,7 +10,6 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   $scope.animationsEnabled = true;
 
   $scope.open = function (size) {
-    alert("coming from profile: stop clicking me!");
 
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
