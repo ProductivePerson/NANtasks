@@ -1,5 +1,4 @@
 var db = require('./database.js');
-// var Model = require('./backend/database.js');
 var jwt  = require('jwt-simple');
 
 
@@ -18,6 +17,7 @@ var taskFuncs = {
 			}
 		});
 	},
+
 
 	getAllUsers: function(res) {
   	db.user.find({},  function(err, users) {
@@ -68,6 +68,21 @@ var taskFuncs = {
 			}
 			res.send("task marked as complete");
 		});
+	},
+  
+	pokeTask: function(id, res){
+		var toggle;
+		db.task.find({"_id": id}, function(err, docs) {
+      toggle = !docs[0]["poked"];
+			db.task.update({"_id": id}, {
+				poked: toggle
+			}, function(err){
+				if(err) {
+					console.log("task not marked as poked", err);
+				}
+				res.send("task marked as poked");
+			});
+		})
 	},
 
 	editTask: function(id, editedTask, res){

@@ -43,14 +43,6 @@ angular.module('groups', [])
 
   //logic used to poke a user.  Gets called as click-handler for the "owner" element 
   //of a task.
-  $scope.pokeUser = function(task) {
-    console.log(id);
-    if (task.creator === id) {
-      task.poked = true;
-    } else {
-      alert("you do not have the authority to poke that user for that task!");
-    }
-  }
 
   $scope.addUser = function(user){
     Proj.addUserToGroup({username: user, groupID: group}).then(function(){
@@ -84,12 +76,29 @@ angular.module('groups', [])
   $scope.deleteById = function(task){
     $scope.deleteTask({id: task}, function(resp){
       $scope.getGroupData();
+      console.log("got here!", resp);
     });
   };
   $scope.complete = function(task){
     $scope.completeTask({id: task}, function(resp){
       $scope.getGroupData();
     });
+  };
+  $scope.poke = function(task, isOn){
+    var verify;
+    console.log(isOn)
+    if (isOn) {
+      verify = task.owner;
+    } else {
+      verify = task.creator;
+    }
+    if (verify === id) {
+      $scope.pokeTask({id: task}, function(resp){
+        $scope.getGroupData();
+      });
+    } else {
+      alert("you do not have the authority to poke that user!");
+    }
   };
   $scope.relocate = function () {
         $location.path('/tasks');

@@ -97,6 +97,13 @@ app.put('/api/tasks', function(req, res){
 	taskFuncs.completeTask(req.body.id, res);
 });
 
+//to mark task as poked
+app.put('/api/tasks/poked', function(req, res){
+	//format of request same as delete request
+	console.log("request received at pokeTask for:", req.body.id);
+	taskFuncs.pokeTask(req.body.id, res);
+});
+
 //to edit name of task
 app.put('/api/tasks/edit', function(req, res, next){
 	// needs the request body and id

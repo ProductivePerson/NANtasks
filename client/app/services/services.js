@@ -128,12 +128,26 @@ angular.module('services', [])
      });
    };
 
+  var pokeTask = function(task, callback){
+     return $http({
+       method: 'PUT',
+       url: '/api/tasks/poked',
+       data: task
+     }).then(function(resp){
+       //using callback to update our tasks ONLY after respond
+       callback(resp);
+     }).catch(function(err){
+       console.log('Error', err);
+     });
+   };
+
   return {
     fetchAllTasks: fetchAllTasks,
     getUserTasks: getUserTasks,
     addTask: addTask,
     deleteTask: deleteTask,
     completeTask: completeTask,
+    pokeTask: pokeTask,
     isUser: isUser
   };
 })
