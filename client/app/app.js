@@ -4,7 +4,10 @@ angular.module('fridge', [
   'groups',
   'services',
   'ui.router',
-  'auth'
+  'auth',
+  'profile',
+  'ui.bootstrap',
+  'ngAnimate'
 ])
 
 //configures ui router for single-page application.  Endpoints:

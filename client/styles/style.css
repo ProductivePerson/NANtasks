@@ -22,6 +22,15 @@
   height: 100px;
   border: 1px solid #eee;
 }
+
+.avatar {
+  margin-top: 10px;
+  margin-left: 10px;
+  display: inline-block;
+  position: inherit;
+  border: 2px solid black;
+}
+
 .sidebar {
   float: left;
   width: 17%;
@@ -50,6 +59,7 @@
 
 .current-user-greeting {
   font-weight: bold;
+  display: block;
 }
 
 .auth-error {
@@ -63,4 +73,12 @@
 
 .task-label-poked {
   background-color: #ffcccc;
+}
+
+.navbar-brand {
+
+}
+
+.current-user-greeting-container {
+  display: block;
 }

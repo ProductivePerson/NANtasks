@@ -211,5 +211,8 @@ angular.module('tasks', [])
             //update Controller2's usersInGroup value based on the "UserTransfer" service's value.
             $scope.usersInGroup= newValue;
         }
-    }, true);
+  }, true);
+  // $scope.open = function(string){
+  //   alert("this is gonna be weird");
+  // };
 });

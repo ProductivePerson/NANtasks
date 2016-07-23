@@ -10,20 +10,39 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Fridge</a>
+      <div><a class="navbar-brand" href="#">Fridge</a></div>
       <div class="current-user-greeting-container" ng-controller="TasksController">
-        <p class="current-user-greeting">Welcome, {{ cUser }}</p>
-        <div class="avatar"><p> CAT PICTURES GOES HERE </p></div>
+        <h3 class="current-user-greeting">Hello, {{ cUser }}</h3>
       </div>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right" ng-controller="AuthController">
         <!-- clicking on 'logout' redirects user to login and removes session token from local storage -->
-        <li><a href="#" ng-click="signout()">Signout</a></li>
+        <li class="signout"><a href="#" ng-click="signout()">Signout</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
+  <div ng-controller="ProfileController">
+      <div class="avatar"><img ng-click="open('lg')" src="assets/catheads (1).png"></div>
+      <script type="text/ng-template" id="profile.html">
+          <div class="modal-header">
+              <h3 class="modal-title">Meow Profile!</h3>
+          </div>
+          <div class="modal-body">
+              <ul>
+                  <li ng-repeat="item in items">
+                      <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+                  </li>
+              </ul>
+              Selected: <b>{{ selected.item }}</b>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+              <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+          </div>
+      </script>
+    </div>
 </nav>
 
 <!-- SIDEBAR THAT CONTAINS THE GENERAL TASKS, PROJ LIST, AND ADD NEW PROJ FEATURE -->
@@ -53,7 +72,6 @@
 
   </nav>
 </div>
-
 <div class="col-sm-9">
   <div ng-controller="TasksController">
     <div class="current-proj-name-container" ng-repeat="projName in currentProjName">
