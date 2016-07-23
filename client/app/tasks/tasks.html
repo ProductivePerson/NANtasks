@@ -76,9 +76,10 @@
 
             {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
 
-            <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
-            <div class="task-label-owner" ng-click="pokeUser(task)"> Assigned to: {{ getUserById(task.owner) }} </div>
-            <span class="task-label-poked" ng-show="task.poked" ng-click="task.poked = false">Please complete this soon!</span>
+          <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
+          <div class="task-label-owner" ng-click="poke(task, false)"> Assigned to: {{ getUserById(task.owner) }} </div>
+          <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+
 
           <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
           <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
@@ -103,10 +104,28 @@
       </div>
     </div>
 
+    <hr style="background-color:black; height:5px;">
+
+    <h3>Tasks You Assigned</h3>
+
+    <div class="task-list-created">
+      <div class="task" ng-repeat="task in createdTasks | filter:{completed:false} | orderBy: '-created_at':true">
+
+          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+
+          <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
+          <div class="task-label-owner" ng-click="poke(task, false)"> Assigned to: {{ getUserById(task.owner) }} </div>
+          <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+
+
+        <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
+        <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
+      </div>
+    </div>
+    
   </div>
 
 </div>
-
 
 <!-- style="position: absolute; left: -9999px; width: 1px; height: 1px;" -->
 <!-- tabindex="-1" -->

@@ -20,6 +20,7 @@ angular.module('tasks', [])
   //will be submitted to server in POST request body containing the new task input data
     //when ready to send requests to server, add "Tasks" controller as function input variable
   $scope.allTasks = [];
+  $scope.createdTasks = [];
   $scope.all;
 
   //PROJECT FUNCTIONALITY
@@ -44,7 +45,6 @@ angular.module('tasks', [])
       if (user._id === id) {
         username = user.username;
       }
-      console.log(user.username);
     });
     return username;
   };
@@ -111,21 +111,22 @@ angular.module('tasks', [])
 
   //logic used to poke a user.  Gets called as click-handler for the "owner" element
   //of a task.
-  $scope.pokeUser = function(task) {
-    console.log(task);
-    if (task.creator === $scope.uID) {
-      task.poked = true;
-      //need to update on server.
-      //delete current task.
-      $scope.deleteById(task.id);
-      //add modified task.
-      Task.addTask(task, function(resp) {
-        console.log("response from poke function: ", resp);
-      })
+  $scope.poke = function(task, isOn){
+    var verify;
+    if (isOn) {
+      verify = task.owner;
+    } else {
+      verify = task.creator;
+    }
+    if (verify === $scope.uID) {
+      $scope.pokeTask({id: task}, function(resp){
+        $scope.getData();
+        $scope.getCreatedData();
+      });
     } else {
       alert("you do not have the authority to poke that user!");
     }
-  }
+  };
 
   $scope.relocate = function (group, id) {
     $window.localStorage.setItem('group.id', id);
@@ -141,8 +142,18 @@ angular.module('tasks', [])
       $scope.allTasks = resp;
     });
   };
-    //initial function call
-    $scope.getData();
+  //initial function call
+  $scope.getData();
+
+  //as above, but gets the tasks that the user created.
+  $scope.getCreatedData = function(){
+    $scope.getCreatedTasks({user: $scope.uID}).then(function(resp){
+    //  console.log(resp)
+      $scope.createdTasks = resp;
+    });
+  };
+  //initial function call
+  $scope.getCreatedData();
 
     //add Task to user(current user or assign to another user)
     $scope.addTaskTo = function(input, userID){
@@ -161,6 +172,7 @@ angular.module('tasks', [])
         $scope.input = null;
         //update task list
         $scope.getData();
+        $scope.getCreatedData();
       });
     };
 
@@ -178,11 +190,13 @@ angular.module('tasks', [])
   $scope.deleteById = function(task){
     $scope.deleteTask({id: task}, function(resp){
       $scope.getData();
+      $scope.getCreatedData();
     });
   };
   $scope.complete = function(task){
     $scope.completeTask({id: task}, function(resp){
       $scope.getData();
+      $scope.getCreatedData();
     });
   };
   $scope.deleteGroup = function(groupID){

@@ -76,6 +76,18 @@ angular.module('services', [])
       });
     };
 
+    //as above, but gets tasks created by user.
+    var getCreatedTasks = function(user){
+      return $http({
+        method: 'POST',
+        url: '/api/user/createdtasks',
+        data: user
+      }).then(function(resp){
+        //console.log(resp.data);
+        return resp.data;
+      });
+    };
+
     var fetchAllTasks = function(){
         return $http({
           method: 'GET',
@@ -148,7 +160,8 @@ angular.module('services', [])
     deleteTask: deleteTask,
     completeTask: completeTask,
     pokeTask: pokeTask,
-    isUser: isUser
+    isUser: isUser,
+    getCreatedTasks: getCreatedTasks
   };
 })
 
