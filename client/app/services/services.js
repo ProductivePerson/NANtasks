@@ -49,6 +49,13 @@ angular.module('services', [])
       console.log("can't update avatar", err);
     });
   };
+
+  return {
+    getUserProfile: getUserProfile,
+    updateUsername: updateUsername,
+    updatePassword: updatePassword,
+    updateAvatar: updateAvatar
+  };
 })
 
 .factory('Tasks', function ($http) {
