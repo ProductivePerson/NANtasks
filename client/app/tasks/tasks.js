@@ -108,6 +108,17 @@ angular.module('tasks', [])
   };
   ////////////////////////////////////
 
+  //logic used to poke a user.  Gets called as click-handler for the "owner" element 
+  //of a task.
+  $scope.pokeUser = function(task) {
+    console.log(task);
+    if (task.creator === $scope.uID) {
+      task.poked = true;
+    } else {
+      alert("you do not have the authority to poke that user!");
+    }
+  }
+
   $scope.relocate = function (group, id) {
     $window.localStorage.setItem('group.id', id);
     $window.localStorage.setItem('group.name', group);
@@ -133,6 +144,7 @@ angular.module('tasks', [])
           createdAt: new Date(),
           group: projID,
           completed: false,
+          poked: false,
           owner:userID,
           creator: $scope.uID,
         };
