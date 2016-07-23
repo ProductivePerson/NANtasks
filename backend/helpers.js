@@ -1,4 +1,4 @@
-var db = require('./backend/database.js');
+var db = require('./database.js');
 var jwt  = require('jwt-simple');
 
 
