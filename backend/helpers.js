@@ -33,7 +33,7 @@ var taskFuncs = {
 			if(err){
 				console.log("tasks not fetched", err);
 			}
-			console.log("tasks", tasks);
+			// console.log("tasks", tasks);
 			res.send(tasks); //sends back array of tasks
 		});
 	},
@@ -152,7 +152,7 @@ var taskFuncs = {
 			if(err){
 				console.log("group not found", err);
 			}
-			console.log("Members of group:", group.users);
+			// console.log("Members of group:", group.users);
 			res.send(group.users); //will return an array of user objects in the group
 		});
 	},
@@ -163,7 +163,7 @@ var taskFuncs = {
 			if(error){
 				console.log("Group tasks weren't retrieved", error);
 			}
-			console.log("successfully retrieved group tasks:", tasks);
+			// console.log("successfully retrieved group tasks:", tasks);
 			res.send(tasks);
 		});
 	},
@@ -177,7 +177,7 @@ var taskFuncs = {
 				if(!user.groups.length) {
 					res.send("user does not have any groups");
 				}else {
-					console.log("groups: ", user.groups);
+					// console.log("groups: ", user.groups);
 					res.send(user.groups);
 				}
 			}
@@ -207,6 +207,7 @@ var taskFuncs = {
 			if(!user.length) { //if a user is not found, an empty array is returned
 				console.log("user does NOT already exist");
 				var user = new db.user(newUser);
+				user.avatar = [0, 0];
 				user.save(function(err){
 					if(err) {
 						console.log("new user not saved", err);

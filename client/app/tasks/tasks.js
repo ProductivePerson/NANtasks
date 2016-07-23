@@ -20,7 +20,6 @@ angular.module('tasks', [])
   //will be submitted to server in POST request body containing the new task input data
     //when ready to send requests to server, add "Tasks" controller as function input variable
   $scope.allTasks = [];
-  $scope.all;
 
   //PROJECT FUNCTIONALITY
   //initially set current group to general tasks and change as other project links are clicked
@@ -44,7 +43,6 @@ angular.module('tasks', [])
       if (user._id === id) {
         username = user.username;
       }
-      console.log(user.username);
     });
     return username;
   };
