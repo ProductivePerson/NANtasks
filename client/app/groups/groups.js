@@ -24,7 +24,7 @@ angular.module('groups', [])
       $scope.usersInGroup = resp.data;
       UserTransfer.setUsers($scope.usersInGroup);
     });
-  }
+  };
   $scope.getMembersData();
 
   Proj.fetchProjectMembers(group).then(function(resp){
