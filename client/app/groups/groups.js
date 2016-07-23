@@ -40,6 +40,18 @@ angular.module('groups', [])
     //initial function call
   $scope.getGroupData();
 
+
+  //logic used to poke a user.  Gets called as click-handler for the "owner" element 
+  //of a task.
+  $scope.pokeUser = function(task) {
+    console.log(id);
+    if (task.creator === id) {
+      task.poked = true;
+    } else {
+      alert("you do not have the authority to poke that user for that task!");
+    }
+  }
+
   $scope.addUser = function(user){
     Proj.addUserToGroup({username: user, groupID: group}).then(function(){
         $scope.userToGroup = null;

@@ -77,7 +77,8 @@
             {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }} 
 
             <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
-            <div class="task-label-owner"> Assigned to: {{ getUserById(task.owner) }} </div>
+            <div class="task-label-owner" ng-click="pokeUser(task)"> Assigned to: {{ getUserById(task.owner) }} </div>
+            <span class="task-label-poked" ng-show="task.poked" ng-click="task.poked = false">Please complete this soon!</span>
 
           <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
           <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
