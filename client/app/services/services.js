@@ -1,5 +1,56 @@
 angular.module('services', [])
 
+//display user profile, allow for updating avatar, username and password
+.factory('Profile', function($http) {
+  var getUserProfile = function() {
+    return $http({
+      method: 'GET',
+      url: '/api/user/profile'
+    }).then(function(resp) {
+      console.log("getUserProfile response from server", resp.data);
+      return resp.data;
+    }).catch(function(err) {
+      console.log("can't retrieve user profile", err);
+    });
+  };
+
+  var updateUsername = function(username) {
+    return $http({
+      method: 'PUT',
+      url: '/api/user/username',
+      data: username
+    }).then(function(resp) {
+      return resp.data;
+    }).catch(function(err) {
+      console.log("can't update username", err);
+    });
+  };
+
+  var updatePassword = function(password) {
+    return $http({
+      method: 'PUT',
+      url: '/api/user/password',
+      data: password
+    }).then(function(resp) {
+      return resp.data;
+    }).catch(function(err) {
+      console.log("can't update password", err);
+    });
+  };
+
+  var updateAvatar = function(avatar) {
+    return $http({
+      method: 'PUT',
+      url: '/assets/avatar',
+      data: avatar
+    }).then(function(resp) {
+      return resp;
+    }).catch(function(err) {
+      console.log("can't update avatar", err);
+    });
+  };
+})
+
 .factory('Tasks', function ($http) {
 
   var isUser = function(username){
@@ -78,12 +129,12 @@ angular.module('services', [])
    };
 
   return {
-    fetchAllTasks:fetchAllTasks,
-    getUserTasks:getUserTasks,
+    fetchAllTasks: fetchAllTasks,
+    getUserTasks: getUserTasks,
     addTask: addTask,
-    deleteTask:deleteTask,
+    deleteTask: deleteTask,
     completeTask: completeTask,
-    isUser:isUser
+    isUser: isUser
   };
 })
 
@@ -198,19 +249,19 @@ angular.module('services', [])
           url: '/api/getAllUsers'
         }).then(function(resp){
           return resp.data;
-        })
+        });
       };
 
   return {
-    addUserToGroup:addUserToGroup,
+    addUserToGroup: addUserToGroup,
     addProject: addProject,
-    deleteGroupbyID:deleteGroupbyID,
-    deleteUserByID:deleteUserByID,
+    deleteGroupbyID: deleteGroupbyID,
+    deleteUserByID: deleteUserByID,
     fetchAllProjectTasks: fetchAllProjectTasks,
     fetchProjectMembers: fetchProjectMembers,
     getUserProjectsList: getUserProjectsList,
     getAllUsers: getAllUsers
-  }
+  };
 })
 
 .factory('Auth', function ($http, $location, $window) {
@@ -264,5 +315,5 @@ angular.module('services', [])
     getUsers: function() {
       return users;
     }
-  }
+  };
 });
