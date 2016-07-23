@@ -1,5 +1,5 @@
 var express = require('express');
-var taskFuncs = require('./helpers.js');
+var taskFuncs = require('./backend/helpers.js');
 var bodyParser = require('body-parser');
 var app = express();
 
