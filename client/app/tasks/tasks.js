@@ -44,7 +44,6 @@ angular.module('tasks', [])
       if (user._id === id) {
         username = user.username;
       }
-      console.log(user.username);
     })
     return username;
   }
@@ -175,7 +174,6 @@ angular.module('tasks', [])
   //set watch statement
   $scope.$watch(function () { return UserTransfer.getUsers(); }, function (newValue, oldValue) {
         if (newValue != null) {
-            console.log("Users in group: ", newValue);
             //update Controller2's usersInGroup value based on the "UserTransfer" service's value.
             $scope.usersInGroup= newValue;
         }

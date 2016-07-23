@@ -9,6 +9,16 @@ angular.module('groups', [])
   $scope.usersInGroup = [];
   $scope.allGroupTasks = [];
 
+    $scope.getUserById = function(id) {
+    var username;
+    $scope.usersInGroup.forEach(function(user) {
+      if (user._id === id) {
+        username = user.username;
+      }
+    })
+    return username;
+  }
+
   $scope.getMembersData = function(){
     Proj.fetchProjectMembers(group).then(function(resp){
       $scope.usersInGroup = resp.data;
@@ -31,21 +41,27 @@ angular.module('groups', [])
   $scope.getGroupData();
 
   $scope.addUser = function(user){
-    console.log(user, group);
     Proj.addUserToGroup({username: user, groupID: group}).then(function(){
         $scope.userToGroup = null;
         $scope.getMembersData();
     });
   };
-  $scope.onSubmit = function(input){
+  $scope.onSubmit = function(input, toUser){
       var taskData = {
           name: input,
           createdAt: new Date(),
           group: group,
           completed: false,
-          owner:id
+          owner: toUser ? $scope.usersInGroup.filter(function(user) {
+            if (user.username === toUser) {
+              console.log("found him! ", user._id);
+              return true;
+            } else {
+              return false;
+            }
+          })[0]._id : id,
+          creator: id
         };
-        console.log('point', taskData);
       Tasks.addTask(taskData, function(resp){
         //clear input after task has been added
         $scope.input = null;

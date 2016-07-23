@@ -6,7 +6,6 @@ angular.module('auth', [])
   $scope.signin = function () {
     Auth.signin($scope.user)
       .then(function (res) {
-        console.log(res);
         $window.localStorage.setItem('com.fridge', res.token);
         $window.localStorage.setItem('user.fridge', res.user.username);
         $window.localStorage.setItem('id.fridge', res.user.id);
@@ -22,7 +21,6 @@ angular.module('auth', [])
   $scope.signup = function () {
     Auth.signup($scope.user)
       .then(function (res) {
-        console.log("resopnse from server", res);
         $window.localStorage.setItem('com.fridge', res.token);
         $window.localStorage.setItem('user.fridge', res.user.username);
         $window.localStorage.setItem('id.fridge', res.user.id);
@@ -38,7 +36,6 @@ angular.module('auth', [])
   //When 'logout' is clicked, signout() function removes token from local storage
   //and redirects user to /signin
   $scope.signout = function(){
-    console.log('logout clicked');
     Auth.signout();
   };
 });
