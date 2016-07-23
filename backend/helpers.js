@@ -1,4 +1,5 @@
 var db = require('./database.js');
+// var Model = require('./backend/database.js');
 var jwt  = require('jwt-simple');
 
 
@@ -17,6 +18,15 @@ var taskFuncs = {
 			}
 		});
 	},
+
+	getAllUsers: function(res) {
+  	db.user.find({},  function(err, users) {
+      if(err){
+				console.log("ya dun fucked up son", err);
+			}
+			res.send(users);
+  	})
+  },
 
 	getUserTasks: function(user, res){
 		db.task.find({"owner": user}, function(err, tasks){
