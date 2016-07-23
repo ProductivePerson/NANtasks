@@ -23,6 +23,7 @@
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
+  <!--code for the modal that pops up when user cat avatar picture is clicked-->
   <div ng-controller="ProfileController">
       <div class="avatar"><img ng-click="open('lg')" src="assets/catheads (1).png"></div>
       <script type="text/ng-template" id="profile.html">
@@ -43,6 +44,7 @@
           </div>
       </script>
     </div>
+    <!--end-->
 </nav>
 
 <!-- SIDEBAR THAT CONTAINS THE GENERAL TASKS, PROJ LIST, AND ADD NEW PROJ FEATURE -->
@@ -140,7 +142,7 @@
         <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
       </div>
     </div>
-    
+
   </div>
 
 </div>
