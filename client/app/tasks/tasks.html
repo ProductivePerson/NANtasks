@@ -64,14 +64,14 @@
     <h3> Change Avatar: </h3>
     <div id="catSwitcher">
       <!-- <a href="#">&#8592</a> -->
-      <input class="button right" type="button" value="&#8592" ng-click="toggleCat(1)">
+      <input class="button right" type="button" value="&#8592" ng-click="toggleCat(-1)">
       <canvas id="avatarCanvas" width="110" height="110" style='border:1px solid #000000;'></canvas>
       <!-- <a href="#">&#8594</a> -->
       <input class="button right" type="button" value="&#8594"ng-click="toggleCat(1)">
     </div>
     <div id="hatWindow">
       <div ng-repeat="hat in catHats">
-        <img class="catHat" src='/assets/{{hat}}' ng-click='drawHat(hat)'>
+        <img class="catHat" src='/assets/{{hat}}' ng-click='setHat($index)'>
       </div>
     </div>
     <input class='button save' type="button" value="Update Avatar" ng-click="saveAvatar()">
