@@ -29,7 +29,6 @@ angular.module('profile', [])
           image.src = "/assets/" + file;
           return image;
         });
-      console.log($scope.catHats);
     });
   };
 
@@ -40,19 +39,12 @@ angular.module('profile', [])
   };
 
   $scope.showAvatar = function() {
-    console.log("Brush and image: ", brush, "\n", $scope.img);
     try {
       brush.drawImage($scope.cavatar, 0, 0);
     }
     catch (TypeError){
-      console.log("Error doing the thing");
+      console.log("Caught: Error rendering Avatar.");
     }
-    // var img = new Image();
-    // var img = new Image();
-    // img.src = window.location.origin + "/assets/cat_1.png";
-    // img.src = window.location.origin + "/assets/cat_1.png";
-    // brush.drawImage(img, 0, 0);
-    // brush.drawImage(img, 0, 0);
   };
   $scope.setHat = function(hat) {
     $scope.hatNum = hat;
@@ -71,12 +63,10 @@ angular.module('profile', [])
 
       img.onload = $scope.showAvatar;
       img.src = src;
-      console.log("loadImage: image is ", img);
       return img;
   }
 
   //sets data on profile-page creation
-  $scope.showAvatar();
   $scope.getAssets();
   Proj.getAllUsers()
     .then(function(res) {
@@ -84,13 +74,12 @@ angular.module('profile', [])
         .getElementsByClassName('current-user-greeting')[0]
         .innerHTML.slice(9);
 
-      console.log("User is ", user);
       if (!$scope.user) {
         $scope.user = res.filter(function (userObj) {
           return userObj.username === user;
         });
         $scope.user = $scope.user['0'];
       }
-      console.log($scope.user);
+      // console.log($scope.user);
     });
 });

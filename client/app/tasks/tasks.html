@@ -71,7 +71,7 @@
     </div>
     <div id="hatWindow">
       <div ng-repeat="hat in catHats">
-        <img class="catHat" src='/assets/{{hat}}' ng-click='setHat($index)'>
+        <img class="catHat" ng-src='/assets/{{hat}}' ng-click='setHat($index)'>
       </div>
     </div>
     <input class='button save' type="button" value="Update Avatar" ng-click="saveAvatar()">
