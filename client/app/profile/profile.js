@@ -7,7 +7,7 @@ angular.module('profile', [])
   var img = loadImage("/assets/cat_1.png");
   setTimeout(function(){
     $scope.cavatar = img;
-    brush.drawImage(img, 0, 0);
+    $scope.showAvatar();
   }, 1000);//FIX THIS LATER;
 
 
@@ -19,6 +19,14 @@ angular.module('profile', [])
       $scope.catHats = resp.data.filter(function (file) {
         return !!~file.indexOf('hat');
       });
+      $scope.catheads = resp.data
+        .filter(function (file) {
+          return !!~file.indexOf('cat');
+        }).map(function (file) {
+          var image = new Image();
+          image.src = "/assets/" + file;
+          return image;
+        });
       console.log($scope.catHats);
     });
   };
@@ -28,9 +36,9 @@ angular.module('profile', [])
   };
 
   $scope.showAvatar = function() {
-    console.log(brush, "\n", img);
+    console.log("Brush and image: ", brush, "\n", img);
 
-    brush.drawImage(img, 0, 0);
+    brush.drawImage($scope.cavatar, 0, 0);
     // var img = new Image();
     // img.src = window.location.origin + "/assets/cat_1.png";
     // brush.drawImage(img, 0, 0);
