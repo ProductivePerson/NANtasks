@@ -2,6 +2,7 @@
 angular.module('fridge', [
   'tasks',
   'groups',
+  'profile',
   'services',
   'ui.router',
   'auth',
