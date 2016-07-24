@@ -57,6 +57,14 @@ app.post('/api/signout', function(req, res, next){
 	taskFuncs.signout(user, res, next);
 });
 
+//get all of the users that are currently logged in
+app.get('/api/signedin', function(req, res, next){
+
+	console.log("signed in users request received");
+	var user = req.body
+	taskFuncs.signedin(user, res, next);
+});
+
 /* TASK ROUTES */
 
 
