@@ -321,7 +321,6 @@ angular.module('services', [])
       img2 = new Image();
 
   var init = function() {
-    console.log("Initialized. Cats are ready");
     $http({
       method:"GET",
       url: window.location.origin + "/api/allAssets/"
@@ -351,13 +350,10 @@ angular.module('services', [])
     selectedHat = hatNum;
     img1 = catHeads[headNum];
     img2 = catHats[hatNum];
-    console.log("Image 2 is ", img2);
     img2.onload = drawAvatarOnNav;
     img1.onload = drawAvatarOnNav;
-    console.log("Image 2 is now ", img2);
   };
   var drawAvatarOnNav = function() {
-    console.log("Ding ding ding");
     loaded++;
     if (loaded >= 2) {
       var canvas = document.createElement("canvas"),
@@ -366,7 +362,8 @@ angular.module('services', [])
       canvas.height="110";
 
       brush.drawImage(img1, 0, 0);
-      if (~img2.src.indexOf('0')) {
+      console.log(img2.src);
+      if (selectedHat !== 0) {
         brush.drawImage(img2, 23, 10);
       }
       document.getElementsByClassName("avatar")[0].children[0].src = canvas.toDataURL();
@@ -383,20 +380,41 @@ angular.module('services', [])
       brush.drawImage(catHats[selectedHat], 23, 10);
     }
   };
-  var saveAvatar = function() {
+  var saveAvatar = function(username) {
     // save canvas image as data url (png format by default)
-      var canvas = document.getElementById('avatarCanvas');
-      var dataURL = canvas.toDataURL();
+    var canvas = document.getElementById('avatarCanvas');
+    var dataURL = canvas.toDataURL();
+    // set canvasImg image src to dataURL
+    // so it can be saved as an image
+    document.getElementsByClassName("avatar")[0].children[0].src = dataURL;
+    $http({
+      method:"post",
+      url: window.location.origin + "/api/updateAvatar/",
+      data: JSON.stringify({username: username, avatar: [selectedCat, selectedHat]})
+    }).then(function(resp) {
+      console.log("Sent something to the server. You're on your own now");
+    });
+  };
+  var toggleCat = function(num) {
+    selectedCat = Math.abs((selectedCat + num)%16);
 
-      // set canvasImg image src to dataURL
-      // so it can be saved as an image
-      document.getElementsByClassName("avatar")[0].children[0].src = dataURL;
+    drawAvatarOnProfile();
+  };
+  var setHat = function(hat) {
+    selectedHat = hat;
+    drawAvatarOnProfile();
+  };
+  var getCatHats = function() {
+    return catHats;
   };
   return {
     init: init,
     drawLocalAvatar:drawLocalAvatar,
     drawAvatarOnNav:drawAvatarOnNav,
     drawAvatarOnProfile: drawAvatarOnProfile,
+    getCatHats: getCatHats,
+    toggleCat: toggleCat,
+    setHat: setHat,
     saveAvatar: saveAvatar
   };
 })

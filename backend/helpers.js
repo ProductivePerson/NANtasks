@@ -6,6 +6,22 @@ var taskFuncs = {
 
 	/* TASK FUNCTIONS */
 
+	updateAvatar: function(data, res) {
+		console.log("\nHERE HERE HERE", data);
+
+		db.user.update({"username":data.username},{"avatar": data.avatar}, function (err) {
+			if (err) {
+				console.error(err);
+				res.send("Unable to update username");
+			} else {
+				res.send("Updated username! I think!");
+			}
+		});
+
+		// db.user.update({'title':'MongoDB Overview'},{$set:{'title':'New MongoDB Tutorial'}});
+
+	},
+
 	updateUsername: function(req, res) {
 		//checks to see if new username already exists
 		db.user.findOne({"username": req.body.newUsername}, function(err, found){
@@ -332,12 +348,12 @@ var taskFuncs = {
 	},
 
 	signout: function(reqUser, res, next){
-		db.inUser.findOne({"username": reqUser.username}, function(err, found){
+		db.inUser.findOne({"username": reqUser.username}, function(err, found) {
 			if(err) {
 				console.log("username not found");
-			}else {
-				console.log("found the user you want to delete ", found)
-				found.remove()
+			} else if (found !== null) {
+				console.log("found the user you want to delete ", found);
+				found.remove();
 				res.status(200).send();
 			}
 		});

@@ -69,21 +69,8 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   };
 
   $scope.init = function () {
-    $http({
-      method:"GET",
-      url: window.location.origin + "/api/allAssets/"
-    }).then(function(resp) {
-      $scope.catHats = resp.data.filter(function (file) {
-        return !!~file.indexOf('hat');
-      });
-      $scope.catHeads = resp.data
-        .filter(function (file) {
-          return !!~file.indexOf('cat');
-        }).map(function (file) {
-          var image = new Image();
-          image.src = "/assets/" + file;
-          return image;
-        });
+    $scope.catHats = Avatar.getCatHats().map(function (img) {
+      return img.src.slice(29);
     });
     var user = document
       .getElementsByClassName('current-user-greeting')[0]
@@ -92,15 +79,12 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
       $scope.user = res;
       $scope.avatarNum = res.avatar[0];
       $scope.hatNum = res.avatar[1];
-      $scope.cavatar = $scope.catHeads[res.avatar[1]];
     });
-    $scope.catHats = Avatar.catHats;
-    $scope.catHeads = Avatar.catHeads;
     Avatar.drawAvatarOnProfile();
   };
 
   $scope.ok = function () {
-    Avatar.saveAvatar();
+    Avatar.saveAvatar($scope.user.username);
     $uibModalInstance.close();
   };
 
@@ -109,34 +93,9 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   };
 
   $scope.toggleCat = function(num) {
-    $scope.avatarNum = ($scope.avatarNum+num)%16;
-    $scope.cavatar.src = "/assets/cat_" + $scope.avatarNum + ".png";
-    $scope.drawHat();
+    Avatar.toggleCat(num);
   };
   $scope.setHat = function(hat) {
-    $scope.hatNum = hat;
-    $scope.drawHat();
+    Avatar.setHat(hat);
   };
-  $scope.drawHat = function() {
-    var canvas = document.getElementById('avatarCanvas');
-    var brush = canvas.getContext("2d");
-    var catHat = document.getElementsByClassName('catHat');
-
-    brush.drawImage($scope.cavatar, 0, 0);
-    if ($scope.hatNum > 0) {
-      brush.drawImage(catHat[$scope.hatNum], 23, 10);
-    }
-  };
-
-  $scope.saveAvatar = function() {
-    // save canvas image as data url (png format by default)
-      var canvas = document.getElementById('avatarCanvas');
-      var dataURL = canvas.toDataURL();
-
-      // set canvasImg image src to dataURL
-      // so it can be saved as an image
-      document.getElementsByClassName("avatar")[0].children[0].src = dataURL;
-  };
-  //sets data on profile-page creation
-  // $scope.getAssets();
 });

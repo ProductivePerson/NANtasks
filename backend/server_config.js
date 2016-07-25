@@ -43,6 +43,10 @@ app.post('/api/signin', function(req, res, next){
 
 });
 
+app.post('/api/updateAvatar', function(req, res) {
+	taskFuncs.updateAvatar(req.body, res);
+});
+
 app.post('/api/user/updateUser', function(req, res, next) {
 	console.log("update username request received");
 	// var newUsername = req.body;
