@@ -25,7 +25,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'profile.html',
-      controller: 'ModalInstanceCtrl',
+      controller: 'ProfileInstanceCtrl',
       size: size,
       // resolve: {
       //   items: function() {
@@ -43,7 +43,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 })
 
 //this controller is what gets rendered inside the modal
-.controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items, $http, Proj, Avatar) {
+.controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, $http, Proj, Avatar, Profile) {
 
 
   angular.extend($scope, Profile);

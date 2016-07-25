@@ -6,7 +6,6 @@ angular.module('fridge', [
   'services',
   'ui.router',
   'auth',
-  'profile',
   'ui.bootstrap',
   'ngAnimate'
 ])
