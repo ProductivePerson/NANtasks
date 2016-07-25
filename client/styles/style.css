@@ -1,78 +1,82 @@
 .main-logo, .task-input {
-  margin: 0 auto;
-  text-align: center;
+ margin: 0 auto;
+ text-align: center;
 }
 
 .main-logo {
-  margin: 10px;
+ margin: 10px;
 }
 
 .task-input {
-  font-size: 24px;
-  padding: 20px;
-  width: 500px;
+ font-size: 24px;
+ padding: 20px;
+ width: 500px;
 }
 .task-list {
-  text-align: center;
+ text-align: center;
 }
 .task {
-  margin: 3px;
-  border-color: #fff;
-  font-size: 24px;
-  height: 100px;
-  border: 1px solid #eee;
+ margin: 3px;
+ border-color: #fff;
+ font-size: 24px;
+ height: 100px;
+ border: 1px solid #eee;
 }
 
 .avatar {
-  margin-top: 10px;
-  margin-left: 10px;
-  display: inline-block;
-  position: inherit;
-  border: 2px solid black;
+ margin-top: -80px;
+ margin-left: 200px;
+ display: inline-block;
+ border: 2px solid black;
+ margin-bottom: 10px;
+}
+
+.avatarDiv {
+ display: inline-block;
 }
 
 .sidebar {
-  float: left;
-  width: 17%;
-  background-color: grey;
+ float: left;
+ width: 17%;
+ background-color: grey;
 }
 
 .sidebar-constants {
-  margin: 0 auto;
-  text-decoration: none;
-  margin-left: 15px;
-  color: black;
+ margin: 0 auto;
+ text-decoration: none;
+ margin-left: 15px;
+ color: black;
 }
 
 .sidebar-projects {
-  border-bottom: 1px solid;
-  margin-right: 5px;
+ border-bottom: 1px solid;
+ margin-right: 5px;
 }
 
 .add-project-icon {
-  max-width: 100%
+ max-width: 100%
 }
 
 .projects-list {
-  list-style-type: none;
+ list-style-type: none;
 }
 
 .current-user-greeting {
-  font-weight: bold;
-  display: block;
+ font-weight: bold;
+ display: block;
 }
 
 .auth-error {
-  visibility: hidden;
+ visibility: hidden;
 }
 
 .show-auth-error {
-  color: red;
-  visibility: visible;
+ color: red;
+ visibility: visible;
 }
 
 .task-label-poked {
-  background-color: #ffcccc;
+ background-color: #ffcccc ;
 }
 
 .navbar-brand {
@@ -80,37 +84,44 @@
 }
 
 .current-user-greeting-container {
-  display: block;
+ display: block;
 }
 
-.modal-title {
-  text-align: center;
+.hat {
+ display: inline-block;
+ float: left;
+ text-align: center;
+ padding: 29px;
 }
 
-#usernameLabel {
-  font-weight: bold;
-  display: inline-block;
-  float: left;
-  /*margin: 10px;
-  padding: 10px;*/
+.saveAvatarButton {
+ display: block;
+ float: right;
+ position: fixed;
+ top: 470px;
+ left: 20px;
+ border-radius: 5px;
 }
 
-#usernameDisplay {
-  display: inline-block;
-  /*margin: 10px;*/
-  padding-left: 10px;
+#catSwitcher {
+ text-align: center;
 }
 
-#usernameForm {
-  display: inline-block;
-  float: left;
-  padding-left: 10px;
+.cat-footer {
+ margin-top: 100px;
+ padding: 15px;
+ padding-top: 20px;
+ text-align: right;
+ border-top: 1px solid #e5e5e5 ;
 }
 
-#passwordLabel {
-  font-weight: bold;
+.hatWindow {
+ display: block;
 }
 
-#profileSave {
-  display: inline-block;
+.greet {
+ text-align: center;
+}
+.blah {
+ text-align: center;
 }
