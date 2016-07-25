@@ -25,7 +25,7 @@
   </div><!-- /.container-fluid -->
   <!--code for the modal that pops up when user cat avatar picture is clicked-->
   <div ng-controller="ProfileController">
-      <div class="avatar"><img ng-click="open('lg')" src="assets/cat_1.png"></div>
+      <div class="avatar"><img id="avatar" ng-click="open('lg')" src="assets/cat_1.png"></div>
       <script type="text/ng-template" id="profile.html">
           <div class="modal-header">
               <h3 class="modal-title">{{ username }}'s Meow Profile!</h3>

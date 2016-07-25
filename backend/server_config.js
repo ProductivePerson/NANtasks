@@ -35,7 +35,6 @@ app.get('/api/signedin', function(req, res, next) {
 app.get('/api/allAssets', function(req, res) {
 	fs.readdir(__dirname + '/../assets/', function(err, files) {
 		if (err) console.error(err);
-		console.log("\n\nALL ASSETS GETREQ: response is ", files);
 		res.send(files);
 	});
 });

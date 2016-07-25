@@ -1,5 +1,5 @@
 angular.module('profile', ['ui.bootstrap','ngAnimate'])
-.controller('ProfileController', function($scope, $uibModal, $log, $window, $http, Proj) {
+.controller('ProfileController', function($scope, $uibModal, $log, $window) {
 
   var username = $window.localStorage.getItem('user.fridge');
   $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
@@ -10,19 +10,13 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
   $scope.animationsEnabled = true;
 
-  var canvas = document.getElementById('avatarCanvas');
-  var brush = canvas.getContext("2d");
-  var img = loadImage("/assets/cat_0.png");
-  $scope.avatarNum = 0;
-  $scope.hatNum = 0;
-  $scope.cavatar = img;
-
   // setTimeout(function() {
   //   $scope.showAvatar();
   // }, 1000);//FIX THIS LATER;
 
   $scope.open = function (size) {
 
+    console.log("ding ding ding");
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'profile.html',
@@ -45,6 +39,31 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
     $scope.animationsEnabled = !$scope.animationsEnabled;
   };
 
+
+})
+
+.controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items, $http, Proj) {
+  var img = loadImage("/assets/cat_0.png");
+  $scope.avatarNum = 0;
+  $scope.hatNum = 0;
+  $scope.cavatar = img;
+
+  var username = $window.localStorage.getItem('user.fridge');
+  $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
+  $scope.uID = $window.localStorage.getItem('id.fridge');
+  $scope.items = items;
+  $scope.selected = {
+    item: $scope.items[0]
+  };
+
+  $scope.ok = function () {
+    $uibModalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+
   $scope.toggleCat = function(num) {
     $scope.avatarNum = ($scope.avatarNum+num)%16;
     $scope.cavatar.src = "/assets/cat_" + $scope.avatarNum + ".png";
@@ -52,6 +71,8 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   };
 
   $scope.showAvatar = function() {
+    var canvas = document.getElementById('avatarCanvas');
+    var brush = canvas.getContext("2d");
     try {
       brush.drawImage($scope.cavatar, 0, 0);
     }
@@ -64,6 +85,8 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
     $scope.drawHat();
   };
   $scope.drawHat = function() {
+    var canvas = document.getElementById('avatarCanvas');
+    var brush = canvas.getContext("2d");
     var catHat = document.getElementsByClassName('catHat');
     brush.drawImage($scope.cavatar, 0, 0);
     if ($scope.hatNum > 0) {
@@ -96,6 +119,15 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
         });
     });
   };
+  $scope.saveAvatar = function() {
+    // save canvas image as data url (png format by default)
+      var canvas = document.getElementById('avatarCanvas');
+      var dataURL = canvas.toDataURL();
+
+      // set canvasImg image src to dataURL
+      // so it can be saved as an image
+      document.getElementsByClassName("avatar")[0].children[0].src = dataURL;
+  };
   //sets data on profile-page creation
   $scope.getAssets();
   Proj.getAllUsers()
@@ -112,23 +144,4 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
       }
       // console.log($scope.user);
     });
-})
-
-.controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items) {
-
-  var username = $window.localStorage.getItem('user.fridge');
-  $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
-  $scope.uID = $window.localStorage.getItem('id.fridge');
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
-  };
-
-  $scope.ok = function () {
-    $uibModalInstance.close($scope.selected.item);
-  };
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
 });
