@@ -299,6 +299,16 @@ var taskFuncs = {
 		});
 	},
 
+	signedin: function(reqUser, res, next){
+		db.inUser.find({}, function(err, signedInUsers){
+			if(err) {
+				console.log("signed in users error ",err);
+			}else {
+				res.send(signedInUsers);
+			}
+		});
+	},
+
 	signout: function(reqUser, res, next){
 		db.inUser.findOne({"username": reqUser.username}, function(err, found){
 			if(err) {

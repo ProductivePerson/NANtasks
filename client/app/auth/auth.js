@@ -18,6 +18,7 @@ angular.module('auth', [])
       });
   };
 
+
   $scope.signup = function () {
     Auth.signup($scope.user)
       .then(function (res) {
@@ -45,4 +46,5 @@ angular.module('auth', [])
       })
 
   };
+
 });

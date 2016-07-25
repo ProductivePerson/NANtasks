@@ -24,12 +24,6 @@ app.post('/api/signup', function(req, res, next){
 	taskFuncs.signup(newUser, res, next);
 });
 
-//to check if user is signed in
-app.get('/api/signedin', function(req, res, next) {
-	//see helpers.js for format of request. It checks the req.headers['x-access-token']
-	// console.log("signedIn request received");
-	taskFuncs.checkAuth(req, res, next);
-});
 
 //to get an array of cat headers
 app.get('/api/allAssets', function(req, res) {
@@ -55,6 +49,14 @@ app.post('/api/signout', function(req, res, next){
 	console.log("signout request received");
 	var user = req.body;
 	taskFuncs.signout(user, res, next);
+});
+
+//get all of the users that are currently logged in
+app.get('/api/signedin', function(req, res, next){
+
+	console.log("signed in users request received");
+	var user = req.body
+	taskFuncs.signedin(user, res, next);
 });
 
 /* TASK ROUTES */

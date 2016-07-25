@@ -310,6 +310,16 @@ angular.module('services', [])
     });
   };
 
+  var signedin = function () {
+    return $http({
+      method: 'GET',
+      url: '/api/signedin',
+    })
+    .then(function (resp) {
+      return resp.data;
+    });
+  };
+
   var signup = function (user) {
     return $http({
       method: 'POST',
@@ -342,7 +352,8 @@ angular.module('services', [])
     signin: signin,
     signup: signup,
     isAuth: isAuth,
-    signout: signout
+    signout: signout,
+    signedin: signedin
   };
 })
 .service("UserTransfer", function() {
