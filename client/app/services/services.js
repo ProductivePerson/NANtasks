@@ -354,13 +354,14 @@ angular.module('services', [])
     img2 = catHats[hatNum];
     setTimeout(function() {
       drawAvatarOnNav();
-    }, 500);
+    }, 1000);
   };
   var drawAvatarOnNav = function() {
     var canvas = document.createElement("canvas"),
         brush = canvas.getContext("2d");
     canvas.width="110";
     canvas.height="110";
+
 
     brush.drawImage(img1, 0, 0);
     if (~img2.src.indexOf('0')) {

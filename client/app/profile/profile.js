@@ -127,7 +127,6 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
     var brush = canvas.getContext("2d");
     var catHat = document.getElementsByClassName('catHat');
 
-    console.log($scope.user);
     brush.drawImage($scope.cavatar, 0, 0);
     if ($scope.hatNum > 0) {
       brush.drawImage(catHat[$scope.hatNum], 23, 10);
