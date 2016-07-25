@@ -383,14 +383,21 @@ angular.module('services', [])
       brush.drawImage(catHats[selectedHat], 23, 10);
     }
   };
+  var saveAvatar = function() {
+    // save canvas image as data url (png format by default)
+      var canvas = document.getElementById('avatarCanvas');
+      var dataURL = canvas.toDataURL();
 
+      // set canvasImg image src to dataURL
+      // so it can be saved as an image
+      document.getElementsByClassName("avatar")[0].children[0].src = dataURL;
+  };
   return {
     init: init,
     drawLocalAvatar:drawLocalAvatar,
     drawAvatarOnNav:drawAvatarOnNav,
     drawAvatarOnProfile: drawAvatarOnProfile,
-    catHats: catHats,
-    catHeads: catHeads
+    saveAvatar: saveAvatar
   };
 })
 .factory('Auth', function ($http, $location, $window) {

@@ -100,6 +100,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   };
 
   $scope.ok = function () {
+    Avatar.saveAvatar();
     $uibModalInstance.close();
   };
 
