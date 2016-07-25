@@ -125,3 +125,14 @@
 .blah {
  text-align: center;
 }
+
+#usernameLabel {
+  font-weight: bold;
+  display: inline-block;
+  float: left;
+}
+
+#usernameDisplay {
+  display: inline-block;
+  padding-left: 15px;
+}
