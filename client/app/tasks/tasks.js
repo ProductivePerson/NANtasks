@@ -214,4 +214,12 @@ angular.module('tasks', [])
   // $scope.open = function(string){
   //   alert("this is gonna be weird");
   // };
+
+  $scope.signedin = function(){
+    Auth.signedin()
+      .then(function(data){
+        console.log(data)
+      });
+  };
+
 });
