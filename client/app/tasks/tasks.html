@@ -25,7 +25,7 @@
   </div><!-- /.container-fluid -->
   <!--code for the modal that pops up when user cat avatar picture is clicked-->
   <div ng-controller="ProfileController">
-      <div class="avatar"><img ng-click="open('lg')" src="assets/catheads (1).png"></div>
+      <div class="avatar"><img id="avatar" ng-click="open('lg')" src="assets/cat_1.png"></div>
       <script type="text/ng-template" id="profile.html">
           <div class="modal-header">
               <h3 class="modal-title">{{ username }}'s Meow Profile!</h3>
@@ -37,6 +37,22 @@
                   </li>
               </ul>
               Selected: <b>{{ selected.item }}</b>
+              <div id="userAvatar">
+                <h3> Change Avatar: </h3>
+                <div id="catSwitcher">
+                  <!-- <a href="#">&#8592</a> -->
+                  <input class="button right" type="button" value="&#8592" ng-click="toggleCat(-1)">
+                  <canvas id="avatarCanvas" width="110" height="110" style='border:1px solid #000000;'></canvas>
+                  <!-- <a href="#">&#8594</a> -->
+                  <input class="button right" type="button" value="&#8594"ng-click="toggleCat(1)">
+                </div>
+                <div id="hatWindow">
+                  <div ng-repeat="hat in catHats">
+                    <img class="catHat" ng-src='/assets/{{hat}}' ng-click='setHat($index)'>
+                  </div>
+                </div>
+                <input class='button save' type="button" value="Update Avatar" ng-click="saveAvatar()">
+              </div>
           </div>
           <div class="modal-footer">
               <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
@@ -46,7 +62,6 @@
     </div>
     <!--end-->
 </nav>
-
 <!-- SIDEBAR THAT CONTAINS THE GENERAL TASKS, PROJ LIST, AND ADD NEW PROJ FEATURE -->
 <div class="sidebar" style="background-color:#eee; height:500px;">
   <nav class="sidebar-constants">

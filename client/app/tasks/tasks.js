@@ -21,7 +21,6 @@ angular.module('tasks', [])
     //when ready to send requests to server, add "Tasks" controller as function input variable
   $scope.allTasks = [];
   $scope.createdTasks = [];
-  $scope.all;
 
   //PROJECT FUNCTIONALITY
   //initially set current group to general tasks and change as other project links are clicked
