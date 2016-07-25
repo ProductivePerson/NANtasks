@@ -43,8 +43,7 @@ angular.module('auth', [])
         $window.localStorage.removeItem('id.fridge');
         $window.localStorage.removeItem('com.fridge');
         $location.path('/signin');
-      })
-
+      });
   };
 
 });

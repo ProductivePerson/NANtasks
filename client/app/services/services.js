@@ -14,13 +14,17 @@ angular.module('services', [])
     });
   };
 
-  var updateUsername = function(username) {
+  var updateUsername = function(oldUsername, newUsername) {
     return $http({
-      method: 'PUT',
-      url: '/api/user/username',
-      data: username
+      method: 'POST',
+      url: '/api/user/updateUser',
+      data: {
+        'oldUsername': oldUsername,
+        'newUsername': newUsername
+      }
     }).then(function(resp) {
-      return resp.data;
+      console.log("updateUsername is ", resp.config.data);
+      return resp.config.data;
     }).catch(function(err) {
       console.log("can't update username", err);
     });

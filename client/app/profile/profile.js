@@ -1,5 +1,8 @@
 angular.module('profile', ['ui.bootstrap','ngAnimate'])
-.controller('ProfileController', function($scope, $uibModal, $log, $window, Avatar, Proj) {
+//this controller is for the maine frame of the modal for the profile control
+.controller('ProfileController', function($scope, $uibModal, $log, $window, Avatar, Proj, Tasks, Profile) {
+
+  angular.extend($scope, Profile);
 
   var username = $window.localStorage.getItem('user.fridge');
   $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
@@ -7,7 +10,6 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   $scope.uID = $window.localStorage.getItem('id.fridge');
   $scope.password = "password";
   console.log('profile stuff', $scope.username, $scope.uID, $scope.password);
-  $scope.items = [$scope.username, 'password'];
 
   $scope.animationsEnabled = true;
 
@@ -23,18 +25,13 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'profile.html',
-      controller: 'ProfileInstanceCtrl',
+      controller: 'ModalInstanceCtrl',
       size: size,
-      resolve: {
-        items: function() {
-          return $scope.items;
-        }
-      }
-    });
-    modalInstance.result.then(function (selectedItem) {
-    $scope.selected = selectedItem;
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
+      // resolve: {
+      //   items: function() {
+      //     return $scope.items;
+      //   }
+      // }
     });
   };
 
@@ -45,14 +42,30 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
 })
 
+//this controller is what gets rendered inside the modal
 .controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items, $http, Proj, Avatar) {
+
+
+  angular.extend($scope, Profile);
+
+  $scope.showForm = false;
+  $scope.showName = true;
+
+  $scope.usernameClicked = function() {
+    $scope.showName = !$scope.showName;
+    $scope.showForm = !$scope.showForm;
+  };
 
   var username = $window.localStorage.getItem('user.fridge');
   $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
   $scope.uID = $window.localStorage.getItem('id.fridge');
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
+  // $scope.items = items;
+
+  $scope.updateName = function(newUsername) {
+    Profile.updateUsername($scope.username, newUsername);
+    $scope.username = newUsername;
+    $scope.usernameClicked();
+    console.log('newUsername', newUsername);
   };
 
   $scope.init = function () {
@@ -89,7 +102,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   };
 
   $scope.ok = function () {
-    $uibModalInstance.close($scope.selected.item);
+    $uibModalInstance.close();
   };
 
   $scope.cancel = function () {

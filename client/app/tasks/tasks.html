@@ -31,12 +31,29 @@
               <h3 class="modal-title">{{ username }}'s Meow Profile!</h3>
           </div>
           <div class="modal-body">
-              <ul>
-                  <li ng-repeat="item in items">
+              <ul id="userInfo">
+                <div class="username">
+                  <div id="usernameLabel"><p> Username:</p></div>
+                  <div id="usernameDisplay" ng-click="usernameClicked()" ng-show="showName"><p> {{ username }} </p></div>
+                  <form ng-show="showForm" id="usernameForm" name="signupForm" ng-submit="updateName(newUsername)" novalidate>
+                    <input type="text" ng-class="{'error':signupForm.user.$invalid && !signupForm.user.$pristine}" ng-model="newUsername" name="newUsername" ng-minlength="6" ng-maxlength="14" required>
+                    <p ng-show="signupForm.user.$invalid && !signupForm.user.$pristine">Username must be greater than 5 characters</p>
+
+                    <p class="auth-error">
+                      Username already exists
+                    </p>
+                    <div id="profileSave"><button> save </button></div>
+                  </form>
+
+                </div>
+                <!-- <div class="password">
+                  <div id="passwordLabel"><p> Password: </p> </div>
+                  <div id="passwordInput"><p>  {{ password }} </p> </div>
+                  <div ng-repeat="item in items">
                       <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-                  </li>
+                  </div>
+                </div> -->
               </ul>
-              Selected: <b>{{ selected.item }}</b>
               <div id="userAvatar">
                 <h3> Change Avatar: </h3>
                 <div id="catSwitcher" ng-init="init()">

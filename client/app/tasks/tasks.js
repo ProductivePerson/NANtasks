@@ -177,7 +177,7 @@ angular.module('tasks', [])
 
     $scope.onSubmit = function(input, toUser){
     if(toUser){ // if optional 'user' field is specified
-      //if we assigning task to user, we need to make async call to check if this user exist ni db and send userid to the client
+      //if we are assigning task to user, we need to make async call to check if this user exist in db and send userid to the client
       $scope.isUser({user: toUser}).then(function(resp){  //check for user.
         $scope.addTaskTo(input, resp);  //add task to DB with target user as owner
       });
@@ -206,9 +206,9 @@ angular.module('tasks', [])
 
   //set watch statement
   $scope.$watch(function () { return UserTransfer.getUsers(); }, function (newValue, oldValue) {
-        if (newValue != null) {
+        if (newValue !== null) {
             //update Controller2's usersInGroup value based on the "UserTransfer" service's value.
-            $scope.usersInGroup= newValue;
+            $scope.usersInGroup = newValue;
         }
   }, true);
   // $scope.open = function(string){
@@ -218,8 +218,8 @@ angular.module('tasks', [])
   $scope.signedin = function(){
     Auth.signedin()
       .then(function(data){
-        $scope.signedInUsers = data
-        console.log(data)
+        $scope.signedInUsers = data;
+        // console.log(data);
       });
   };
 

@@ -6,8 +6,30 @@ var taskFuncs = {
 
 	/* TASK FUNCTIONS */
 
-	// checks to see if user exists if so return the userId for that user.
+	updateUsername: function(req, res) {
+		//checks to see if new username already exists
+		db.user.findOne({"username": req.body.newUsername}, function(err, found){
+			if(!found) {
+				console.log(req.body.newUsername, "username not found, so that's good for you!");
+				//updates old username with new username
+				db.user.update({"username": req.body.oldUsername}, {"username": req.body.newUsername}, function(err, success) {
+					if (err) {
+			 		  res.send("can't update username!");
+				 	} else {
+						console.log("new username is", req.body.newUsername);
+				 		res.send(req.body.newUsername);
+				 	}
+					// console.log("new username is", req.body.newUsername);
+					// res.send(req.body);
+				});
+			} else {
+				console.log("someone has this name: ", req.body.newUsername);
+				res.send("someone has this name!");
+			}
+		});
+	},
 
+	// checks to see if user exists if so return the userId for that user.
 	checkUser: function(userName, res) {
 		db.user.findOne({"username": userName}, function(err, found){
 			if(err) {

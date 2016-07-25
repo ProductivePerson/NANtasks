@@ -82,3 +82,35 @@
 .current-user-greeting-container {
   display: block;
 }
+
+.modal-title {
+  text-align: center;
+}
+
+#usernameLabel {
+  font-weight: bold;
+  display: inline-block;
+  float: left;
+  /*margin: 10px;
+  padding: 10px;*/
+}
+
+#usernameDisplay {
+  display: inline-block;
+  /*margin: 10px;*/
+  padding-left: 10px;
+}
+
+#usernameForm {
+  display: inline-block;
+  float: left;
+  padding-left: 10px;
+}
+
+#passwordLabel {
+  font-weight: bold;
+}
+
+#profileSave {
+  display: inline-block;
+}

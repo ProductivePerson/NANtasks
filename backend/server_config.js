@@ -43,6 +43,14 @@ app.post('/api/signin', function(req, res, next){
 
 });
 
+app.post('/api/user/updateUser', function(req, res, next) {
+	console.log("update username request received");
+	// var newUsername = req.body;
+
+	console.log("updated user name is ", req);
+	taskFuncs.updateUsername(req, res, next);
+});
+
 //sign user out and delete the signed in user document
 app.post('/api/signout', function(req, res, next){
 	//see helpers.js for format of request. It checks the req.headers['x-access-token']
