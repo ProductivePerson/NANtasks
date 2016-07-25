@@ -4,7 +4,7 @@ angular.module('tasks', [])
 
   angular.extend($scope, Tasks, Auth, Proj);
   $scope.usersInGroup = [];
-
+  $scope.signedInUsersTog = true;
   //get all users, then shove them in usersInGroup.
   Proj.getAllUsers()
     .then(function(res) {
@@ -218,6 +218,7 @@ angular.module('tasks', [])
   $scope.signedin = function(){
     Auth.signedin()
       .then(function(data){
+        $scope.signedInUsers = data
         console.log(data)
       });
   };

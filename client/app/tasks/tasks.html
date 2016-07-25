@@ -106,7 +106,12 @@
     </div>
 
     <div class="signedin-button">
-      <button type="submit" class="btn btn-default" ng-click= "signedin()" >Get Logged In Users</button>
+      <button type="submit" class="btn btn-default" ng-click= "signedin() ; signedInUsersTog = !signedInUsersTog " ng-model = "signedInUsers">Get Logged In Users</button>
+      <hr>
+      <div uib-collapse="signedInUsersTog;">
+        <div ng-repeat="user in signedInUsers">{{user["username"]}}</div>
+      </div>
+
     </div>
 
     <h3>Current Tasks</h3>
