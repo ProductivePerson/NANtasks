@@ -10,12 +10,16 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
   $scope.animationsEnabled = true;
 
-  setTimeout(function() {
-    $scope.avatarNum = 0;
-    $scope.hatNum = 0;
-    $scope.cavatar = img;
-    $scope.showAvatar();
-  }, 1000);//FIX THIS LATER;
+  var canvas = document.getElementById('avatarCanvas');
+  var brush = canvas.getContext("2d");
+  var img = loadImage("/assets/cat_0.png");
+  $scope.avatarNum = 0;
+  $scope.hatNum = 0;
+  $scope.cavatar = img;
+
+  // setTimeout(function() {
+  //   $scope.showAvatar();
+  // }, 1000);//FIX THIS LATER;
 
   $scope.open = function (size) {
 
