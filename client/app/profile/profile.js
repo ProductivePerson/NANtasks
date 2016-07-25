@@ -94,11 +94,9 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
       $scope.hatNum = res.avatar[1];
       $scope.cavatar = $scope.catHeads[res.avatar[1]];
     });
-
-    var img = loadImage("/assets/cat_0.png");//
-    // $scope.cavatar = img;
-
-    $scope.showAvatar();
+    $scope.catHats = Avatar.catHats;
+    $scope.catHeads = Avatar.catHeads;
+    Avatar.drawAvatarOnProfile();
   };
 
   $scope.ok = function () {
@@ -113,10 +111,6 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
     $scope.avatarNum = ($scope.avatarNum+num)%16;
     $scope.cavatar.src = "/assets/cat_" + $scope.avatarNum + ".png";
     $scope.drawHat();
-  };
-
-  $scope.showAvatar = function() {
-    Avatar.drawAvatarOnProfile();
   };
   $scope.setHat = function(hat) {
     $scope.hatNum = hat;
@@ -133,13 +127,6 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
     }
   };
 
-  function loadImage(src) {
-      var img = new Image();
-
-      img.onload = $scope.showAvatar;
-      img.src = src;
-      return img;
-  }
   $scope.saveAvatar = function() {
     // save canvas image as data url (png format by default)
       var canvas = document.getElementById('avatarCanvas');
