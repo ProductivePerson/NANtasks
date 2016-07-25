@@ -53,7 +53,7 @@ app.post('/api/signin', function(req, res, next){
 app.post('/api/signout', function(req, res, next){
 	//see helpers.js for format of request. It checks the req.headers['x-access-token']
 	console.log("signout request received");
-	var user = req.body
+	var user = req.body;
 	taskFuncs.signout(user, res, next);
 });
 

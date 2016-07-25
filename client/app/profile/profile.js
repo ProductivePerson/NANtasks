@@ -10,13 +10,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
   $scope.animationsEnabled = true;
 
-  // setTimeout(function() {
-  //   $scope.showAvatar();
-  // }, 1000);//FIX THIS LATER;
-
   $scope.open = function (size) {
-
-    console.log("ding ding ding");
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'profile.html',
@@ -43,9 +37,15 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 })
 
 .controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items, $http, Proj) {
-  var img = loadImage("/assets/cat_0.png");
+  // setTimeout(function() {
+  //   $scope.showAvatar();
+  // }, 1000);//FIX THIS LATER;
+
+  //Set all of these in a initialization function that pulls user data from the
+  // server
   $scope.avatarNum = 0;
   $scope.hatNum = 0;
+  var img = loadImage("/assets/cat_0.png");//
   $scope.cavatar = img;
 
   var username = $window.localStorage.getItem('user.fridge');
