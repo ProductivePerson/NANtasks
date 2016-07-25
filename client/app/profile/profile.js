@@ -3,6 +3,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
   var username = $window.localStorage.getItem('user.fridge');
   $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
+  console.log("Username is ", $scope.username);
   $scope.uID = $window.localStorage.getItem('id.fridge');
   $scope.password = "password";
   console.log('profile stuff', $scope.username, $scope.uID, $scope.password);
@@ -37,16 +38,6 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 })
 
 .controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items, $http, Proj) {
-  // setTimeout(function() {
-  //   $scope.showAvatar();
-  // }, 1000);//FIX THIS LATER;
-
-  //Set all of these in a initialization function that pulls user data from the
-  // server
-  $scope.avatarNum = 0;
-  $scope.hatNum = 0;
-  var img = loadImage("/assets/cat_0.png");//
-  $scope.cavatar = img;
 
   var username = $window.localStorage.getItem('user.fridge');
   $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
@@ -54,6 +45,46 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   $scope.items = items;
   $scope.selected = {
     item: $scope.items[0]
+  };
+
+  $scope.init = function () {
+    $http({
+      method:"GET",
+      url: window.location.origin + "/api/allAssets/"
+    }).then(function(resp) {
+      $scope.catHats = resp.data.filter(function (file) {
+        return !!~file.indexOf('hat');
+      });
+      $scope.catheads = resp.data
+        .filter(function (file) {
+          return !!~file.indexOf('cat');
+        }).map(function (file) {
+          var image = new Image();
+          image.src = "/assets/" + file;
+          return image;
+        });
+    });
+    Proj.getAllUsers()//sets $scope.user object to current
+      .then(function(res) {
+        var user = document
+          .getElementsByClassName('current-user-greeting')[0]
+          .innerHTML.slice(9);
+
+        if (!$scope.user) {
+          $scope.user = res.filter(function (userObj) {
+            return userObj.username === user;
+          });
+          $scope.user = $scope.user['0'];
+          console.log("User object is ", $scope.user);
+        }
+        // console.log($scope.user);
+      });
+    var img = loadImage("/assets/cat_0.png");//
+    $scope.avatarNum = $scope.user.avatar[0];
+    $scope.hatNum = $scope.user.avatar[1];
+    $scope.cavatar = img;
+
+    $scope.showAvatar();
   };
 
   $scope.ok = function () {
@@ -102,22 +133,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
       return img;
   }
   $scope.getAssets = function() {
-    $http({
-      method:"GET",
-      url: window.location.origin + "/api/allAssets/"
-    }).then(function(resp) {
-      $scope.catHats = resp.data.filter(function (file) {
-        return !!~file.indexOf('hat');
-      });
-      $scope.catheads = resp.data
-        .filter(function (file) {
-          return !!~file.indexOf('cat');
-        }).map(function (file) {
-          var image = new Image();
-          image.src = "/assets/" + file;
-          return image;
-        });
-    });
+
   };
   $scope.saveAvatar = function() {
     // save canvas image as data url (png format by default)
@@ -129,19 +145,5 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
       document.getElementsByClassName("avatar")[0].children[0].src = dataURL;
   };
   //sets data on profile-page creation
-  $scope.getAssets();
-  Proj.getAllUsers()
-    .then(function(res) {
-      var user = document
-        .getElementsByClassName('current-user-greeting')[0]
-        .innerHTML.slice(9);
-
-      if (!$scope.user) {
-        $scope.user = res.filter(function (userObj) {
-          return userObj.username === user;
-        });
-        $scope.user = $scope.user['0'];
-      }
-      // console.log($scope.user);
-    });
+  // $scope.getAssets();
 });

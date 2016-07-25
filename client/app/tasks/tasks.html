@@ -39,7 +39,7 @@
               Selected: <b>{{ selected.item }}</b>
               <div id="userAvatar">
                 <h3> Change Avatar: </h3>
-                <div id="catSwitcher">
+                <div id="catSwitcher" ng-init="init()">
                   <!-- <a href="#">&#8592</a> -->
                   <input class="button right" type="button" value="&#8592" ng-click="toggleCat(-1)">
                   <canvas id="avatarCanvas" width="110" height="110" style='border:1px solid #000000;'></canvas>
