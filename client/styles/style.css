@@ -98,7 +98,7 @@
  display: block;
  float: right;
  position: fixed;
- top: 470px;
+ top: 420px;
  left: 20px;
  border-radius: 5px;
 }
@@ -134,5 +134,9 @@
 
 #usernameDisplay {
   display: inline-block;
+  padding-left: 15px;
+}
+
+#usernameForm {
   padding-left: 15px;
 }
