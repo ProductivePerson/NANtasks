@@ -1,5 +1,5 @@
 angular.module('profile', ['ui.bootstrap','ngAnimate'])
-.controller('ProfileController', function($scope, $uibModal, $log, $window) {
+.controller('ProfileController', function($scope, $uibModal, $log, $window, Avatar, Proj) {
 
   var username = $window.localStorage.getItem('user.fridge');
   $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
@@ -11,6 +11,14 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
   $scope.animationsEnabled = true;
 
+  $scope.loadStuff = function() {
+    Avatar.init();
+    var user = $window.localStorage.getItem('user.fridge');
+    Proj.getOneUser(user, function(res) {
+      // $scope.user = res;
+      Avatar.drawLocalAvatar(res.avatar[0], res.avatar[1]);
+    });
+  };
   $scope.open = function (size) {
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
@@ -37,7 +45,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
 })
 
-.controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items, $http, Proj) {
+.controller('ProfileInstanceCtrl', function ($scope, $uibModalInstance, $window, items, $http, Proj, Avatar) {
 
   var username = $window.localStorage.getItem('user.fridge');
   $scope.username = username[0].toUpperCase() + username.slice(1).toLowerCase();
@@ -55,7 +63,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
       $scope.catHats = resp.data.filter(function (file) {
         return !!~file.indexOf('hat');
       });
-      $scope.catheads = resp.data
+      $scope.catHeads = resp.data
         .filter(function (file) {
           return !!~file.indexOf('cat');
         }).map(function (file) {
@@ -64,25 +72,18 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
           return image;
         });
     });
-    Proj.getAllUsers()//sets $scope.user object to current
-      .then(function(res) {
-        var user = document
-          .getElementsByClassName('current-user-greeting')[0]
-          .innerHTML.slice(9);
+    var user = document
+      .getElementsByClassName('current-user-greeting')[0]
+      .innerHTML.slice(7);
+    Proj.getOneUser(user, function(res) {
+      $scope.user = res;
+      $scope.avatarNum = res.avatar[0];
+      $scope.hatNum = res.avatar[1];
+      $scope.cavatar = $scope.catHeads[res.avatar[1]];
+    });
 
-        if (!$scope.user) {
-          $scope.user = res.filter(function (userObj) {
-            return userObj.username === user;
-          });
-          $scope.user = $scope.user['0'];
-          console.log("User object is ", $scope.user);
-        }
-        // console.log($scope.user);
-      });
     var img = loadImage("/assets/cat_0.png");//
-    $scope.avatarNum = $scope.user.avatar[0];
-    $scope.hatNum = $scope.user.avatar[1];
-    $scope.cavatar = img;
+    // $scope.cavatar = img;
 
     $scope.showAvatar();
   };
@@ -102,14 +103,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
   };
 
   $scope.showAvatar = function() {
-    var canvas = document.getElementById('avatarCanvas');
-    var brush = canvas.getContext("2d");
-    try {
-      brush.drawImage($scope.cavatar, 0, 0);
-    }
-    catch (TypeError){
-      console.log("Caught: Error rendering Avatar.");
-    }
+    Avatar.drawAvatarOnProfile();
   };
   $scope.setHat = function(hat) {
     $scope.hatNum = hat;
@@ -119,6 +113,8 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
     var canvas = document.getElementById('avatarCanvas');
     var brush = canvas.getContext("2d");
     var catHat = document.getElementsByClassName('catHat');
+
+    console.log($scope.user);
     brush.drawImage($scope.cavatar, 0, 0);
     if ($scope.hatNum > 0) {
       brush.drawImage(catHat[$scope.hatNum], 23, 10);
@@ -132,9 +128,6 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
       img.src = src;
       return img;
   }
-  $scope.getAssets = function() {
-
-  };
   $scope.saveAvatar = function() {
     // save canvas image as data url (png format by default)
       var canvas = document.getElementById('avatarCanvas');
