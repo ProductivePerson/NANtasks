@@ -284,7 +284,16 @@ angular.module('services', [])
         }).then(function(resp){
           return resp.data;
         });
-      };
+  };
+
+  var getOneUser = function(username, cb) {
+    getAllUsers().then(function (res) {
+      var user = res.filter(function (userObj) {
+        return userObj.username === username;
+      });
+      cb(user[0]);
+    });
+  };
 
   return {
     addUserToGroup: addUserToGroup,
@@ -294,10 +303,86 @@ angular.module('services', [])
     fetchAllProjectTasks: fetchAllProjectTasks,
     fetchProjectMembers: fetchProjectMembers,
     getUserProjectsList: getUserProjectsList,
-    getAllUsers: getAllUsers
+    getAllUsers: getAllUsers,
+    getOneUser: getOneUser
   };
 })
+.factory('Avatar', function(Proj, $http) {
+  var catHats,
+      catHeads,
+      selectedCat,
+      selectedHat,
+      loaded = 0,
+      img1 = new Image(),
+      img2 = new Image();
 
+  var init = function() {
+    img1.onload = drawAvatarOnNav;
+    img2.onload = drawAvatarOnNav;
+    $http({
+      method:"GET",
+      url: window.location.origin + "/api/allAssets/"
+    }).then(function(resp) {
+      catHats = resp.data
+        .filter(function (file) {
+          return !!~file.indexOf('hat');
+        })
+        .map(function (file) {
+          var image = new Image();
+          image.src = "/assets/" + file;
+          return image;
+        });
+      catHeads = resp.data
+        .filter(function (file) {
+          return !!~file.indexOf('cat');
+        }).map(function (file) {
+          var image = new Image();
+          image.src = "/assets/" + file;
+          return image;
+        });
+    });
+  };
+  var drawLocalAvatar = function(headNum, hatNum) {
+    loaded = 0;
+    selectedCat = headNum;
+    selectedHat = hatNum;
+    img1 = catHeads[headNum];
+    img2 = catHats[hatNum];
+    setTimeout(function() {
+      drawAvatarOnNav();
+    }, 500);
+  };
+  var drawAvatarOnNav = function() {
+    var canvas = document.createElement("canvas"),
+        brush = canvas.getContext("2d");
+    canvas.width="110";
+    canvas.height="110";
+
+    brush.drawImage(img1, 0, 0);
+    if (~img2.src.indexOf('0')) {
+      brush.drawImage(img2, 23, 10);
+    }
+    document.getElementsByClassName("avatar")[0].children[0].src = canvas.toDataURL();
+  };
+
+  var drawAvatarOnProfile = function() {
+    var canvas = document.getElementById('avatarCanvas');
+    var brush = canvas.getContext("2d");
+    var catHat = document.getElementsByClassName('catHat');
+
+    brush.drawImage(catHeads[selectedCat], 0, 0);
+    if (selectedHat > 0) {
+      brush.drawImage(catHats[selectedHat], 23, 10);
+    }
+  };
+
+  return {
+    init: init,
+    drawLocalAvatar:drawLocalAvatar,
+    drawAvatarOnNav:drawAvatarOnNav,
+    drawAvatarOnProfile: drawAvatarOnProfile
+  };
+})
 .factory('Auth', function ($http, $location, $window) {
   var signin = function (user) {
     return $http({
