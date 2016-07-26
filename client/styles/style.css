@@ -75,10 +75,6 @@
  visibility: visible;
 }
 
-.task-label-poked {
- background-color: #ffcccc ;
-}
-
 .navbar-brand {
 
 }
@@ -139,4 +135,34 @@
 
 #usernameForm {
   padding-left: 15px;
+}
+
+.task-label-title {
+  font-weight: bold;
+}
+
+.task-label-creator {
+  font-size: 12pt;
+  font-style: oblique;
+  padding: 4px;
+  border: 1px solid grey;
+  background-color: #e1cdfa;
+}
+
+.task-label-timestamp {
+  font-size: 14pt;
+  color: grey;
+}
+
+.task-label-owner {
+  font-size: 12pt;
+  font-style: oblique;
+  background-color: #e1cdfa;
+  border: 1px solid grey;
+  margin: 4px;
+}
+
+.task-label-poked {
+  margin:4px;
+  background-color: #ffcccc ;
 }

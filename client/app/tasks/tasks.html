@@ -136,12 +136,13 @@
       <div class="task-list-pending">
         <div class="task task-pending" ng-repeat="task in allTasks | filter:{completed:false} | orderBy: '-created_at':true">
 
-            {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
-
+          <span class="task-label-title">{{task.name}}</span> 
+          from 
           <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
-          <div class="task-label-owner" ng-click="poke(task, false)"> Assigned to: {{ getUserById(task.owner) }} </div>
-          <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
-
+          <div class="task-label-timestamp">{{task.createdAt | date:'HH:mm MM/dd/yyyy' }}</div>
+          <div ng-click="poke(task, false)" ng-show="task.owner !== task.creator"> Assigned to: <span class="task-label-owner">{{ getUserById(task.owner) }} </span>
+            <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+          </div>
 
           <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
           <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
@@ -156,11 +157,16 @@
 
     <div class="task-list">
       <div class="task" ng-repeat="task in allTasks | filter:{completed:true} | orderBy: '-created_at':true">
+        {{task.name}} 
 
-          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
-
+          <span class="task-label-title">{{task.name}}</span> 
+          from 
           <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
-
+          <div class="task-label-timestamp">{{task.createdAt | date:'HH:mm MM/dd/yyyy' }}</div>
+          <div ng-click="poke(task, false)" ng-show="task.owner !== task.creator"> Assigned to: <span class="task-label-owner">{{ getUserById(task.owner) }} </span>
+            <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+          </div>
+          
         <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
 
       </div>
@@ -173,15 +179,18 @@
     <div class="task-list-created">
       <div class="task" ng-repeat="task in createdTasks | filter:{completed:false} | orderBy: '-created_at':true">
 
-          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
-
+          <span class="task-label-title">{{task.name}}</span> 
+          from 
           <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
-          <div class="task-label-owner" ng-click="poke(task, false)"> Assigned to: {{ getUserById(task.owner) }} </div>
-          <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+          <div class="task-label-timestamp">{{task.createdAt | date:'HH:mm MM/dd/yyyy' }}</div>
+          <div ng-click="poke(task, false)" ng-show="task.owner !== task.creator"> Assigned to: <span class="task-label-owner">{{ getUserById(task.owner) }} </span>
+            <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+          </div>
 
 
         <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
         <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
+
       </div>
     </div>
 
