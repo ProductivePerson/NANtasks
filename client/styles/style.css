@@ -90,15 +90,6 @@
  padding: 29px;
 }
 
-.saveAvatarButton {
- display: block;
- float: right;
- position: fixed;
- top: 420px;
- left: 20px;
- border-radius: 5px;
-}
-
 #catSwitcher {
  text-align: center;
 }

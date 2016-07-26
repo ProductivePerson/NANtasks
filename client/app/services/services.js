@@ -321,8 +321,6 @@ angular.module('services', [])
       img2 = new Image();
 
   var init = function() {
-    img1.onload = drawAvatarOnNav;
-    img2.onload = drawAvatarOnNav;
     $http({
       method:"GET",
       url: window.location.origin + "/api/allAssets/"
@@ -352,22 +350,24 @@ angular.module('services', [])
     selectedHat = hatNum;
     img1 = catHeads[headNum];
     img2 = catHats[hatNum];
-    setTimeout(function() {
-      drawAvatarOnNav();
-    }, 1000);
+    img2.onload = drawAvatarOnNav;
+    img1.onload = drawAvatarOnNav;
   };
   var drawAvatarOnNav = function() {
-    var canvas = document.createElement("canvas"),
-        brush = canvas.getContext("2d");
-    canvas.width="110";
-    canvas.height="110";
+    loaded++;
+    if (loaded >= 2) {
+      var canvas = document.createElement("canvas"),
+      brush = canvas.getContext("2d");
+      canvas.width="110";
+      canvas.height="110";
 
-
-    brush.drawImage(img1, 0, 0);
-    if (~img2.src.indexOf('0')) {
-      brush.drawImage(img2, 23, 10);
+      brush.drawImage(img1, 0, 0);
+      console.log(img2.src);
+      if (selectedHat !== 0) {
+        brush.drawImage(img2, 23, 10);
+      }
+      document.getElementsByClassName("avatar")[0].children[0].src = canvas.toDataURL();
     }
-    document.getElementsByClassName("avatar")[0].children[0].src = canvas.toDataURL();
   };
 
   var drawAvatarOnProfile = function() {
@@ -380,12 +380,42 @@ angular.module('services', [])
       brush.drawImage(catHats[selectedHat], 23, 10);
     }
   };
+  var saveAvatar = function(username) {
+    // save canvas image as data url (png format by default)
+    var canvas = document.getElementById('avatarCanvas');
+    var dataURL = canvas.toDataURL();
+    // set canvasImg image src to dataURL
+    // so it can be saved as an image
+    document.getElementsByClassName("avatar")[0].children[0].src = dataURL;
+    $http({
+      method:"post",
+      url: window.location.origin + "/api/updateAvatar/",
+      data: JSON.stringify({username: username, avatar: [selectedCat, selectedHat]})
+    }).then(function(resp) {
+      console.log("Sent something to the server. You're on your own now");
+    });
+  };
+  var toggleCat = function(num) {
+    selectedCat = Math.abs((selectedCat + num)%16);
 
+    drawAvatarOnProfile();
+  };
+  var setHat = function(hat) {
+    selectedHat = hat;
+    drawAvatarOnProfile();
+  };
+  var getCatHats = function() {
+    return catHats;
+  };
   return {
     init: init,
     drawLocalAvatar:drawLocalAvatar,
     drawAvatarOnNav:drawAvatarOnNav,
-    drawAvatarOnProfile: drawAvatarOnProfile
+    drawAvatarOnProfile: drawAvatarOnProfile,
+    getCatHats: getCatHats,
+    toggleCat: toggleCat,
+    setHat: setHat,
+    saveAvatar: saveAvatar
   };
 })
 .factory('Auth', function ($http, $location, $window) {
