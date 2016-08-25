@@ -10,13 +10,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <div><a class="navbar-brand" href="#">Fridge</a></div>
       <div class="current-user-greeting-container" ng-controller="TasksController">
-        <div><a class="navbar-brand" href="#">Fridge</a></div>
         <h3 class="current-user-greeting">Hello, {{ cUser }}</h3>
       </div>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse blah" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right" ng-controller="AuthController">
         <!-- clicking on 'logout' redirects user to login and removes session token from local storage -->
         <li class="signout"><a href="#" ng-click="signout()">Signout</a></li>
@@ -24,39 +24,22 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
   <!--code for the modal that pops up when user cat avatar picture is clicked-->
-  <div class="avatarDiv" ng-controller="ProfileController">
-      <div class="avatar" ng-init="loadStuff()"><img id="avatar" ng-click="open('lg')" src="assets/hat_0.png"></div>
+  <div ng-controller="ProfileController">
+      <div class="avatar"><img id="avatar" ng-click="open('lg')" src="assets/cat_1.png"></div>
       <script type="text/ng-template" id="profile.html">
           <div class="modal-header">
-              <h3 class="modal-title">{{ username }}'s Meowfile!</h3>
+              <h3 class="modal-title">{{ username }}'s Meow Profile!</h3>
           </div>
           <div class="modal-body">
-              <ul id="userInfo">
-                <div class="username">
-                  <div id="usernameLabel"><p> Username:</p></div>
-                  <div id="usernameDisplay" ng-click="usernameClicked()" ng-show="showName"><p> {{ username }} </p></div>
-                  <form ng-show="showForm" id="usernameForm" name="signupForm" ng-submit="updateName(newUsername)" novalidate>
-                    <input type="text" ng-class="{'error':signupForm.user.$invalid && !signupForm.user.$pristine}" ng-model="newUsername" name="newUsername" ng-minlength="6" ng-maxlength="14" required>
-                    <p ng-show="signupForm.user.$invalid && !signupForm.user.$pristine">Username must be greater than 5 characters</p>
-
-                    <p class="auth-error">
-                      Username already exists
-                    </p>
-                    <div id="profileSave"><button> save </button></div>
-                  </form>
-
-                </div>
-                <!-- <div class="password">
-                  <div id="passwordLabel"><p> Password: </p> </div>
-                  <div id="passwordInput"><p>  {{ password }} </p> </div>
-                  <div ng-repeat="item in items">
+              <ul>
+                  <li ng-repeat="item in items">
                       <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-                  </div>
-                </div> -->
+                  </li>
               </ul>
+              Selected: <b>{{ selected.item }}</b>
               <div id="userAvatar">
                 <h3> Change Avatar: </h3>
-                <div id="catSwitcher" ng-init="init()">
+                <div id="catSwitcher">
                   <!-- <a href="#">&#8592</a> -->
                   <input class="button right" type="button" value="&#8592" ng-click="toggleCat(-1)">
                   <canvas id="avatarCanvas" width="110" height="110" style='border:1px solid #000000;'></canvas>
@@ -64,13 +47,14 @@
                   <input class="button right" type="button" value="&#8594"ng-click="toggleCat(1)">
                 </div>
                 <div id="hatWindow">
-                  <div class="hat" ng-repeat="hat in catHats">
+                  <div ng-repeat="hat in catHats">
                     <img class="catHat" ng-src='/assets/{{hat}}' ng-click='setHat($index)'>
                   </div>
                 </div>
+                <input class='button save' type="button" value="Update Avatar" ng-click="saveAvatar()">
               </div>
           </div>
-          <div class="cat-footer">
+          <div class="modal-footer">
               <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
               <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
           </div>
@@ -121,13 +105,8 @@
       </form>
     </div>
 
-    <div class="signedin-button">
-      <button type="submit" class="btn btn-default" ng-click= "signedin() ; signedInUsersTog = !signedInUsersTog " ng-model = "signedInUsers">Get Logged In Users</button>
-      <hr>
-      <div uib-collapse="signedInUsersTog;">
-        <div ng-repeat="user in signedInUsers">{{user["username"]}}</div>
-      </div>
-
+    <div class="task-input">
+      <button type="submit" class="btn btn-default" ng-click= "" >Get Logged In Users</button>
     </div>
 
     <h3>Current Tasks</h3>
@@ -135,13 +114,12 @@
       <div class="task-list-pending">
         <div class="task task-pending" ng-repeat="task in allTasks | filter:{completed:false} | orderBy: '-created_at':true">
 
-          <span class="task-label-title">{{task.name}}</span>
-          from
+            {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+
           <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
-          <div class="task-label-timestamp">{{task.createdAt | date:'HH:mm MM/dd/yyyy' }}</div>
-          <div ng-click="poke(task, false)" ng-show="task.owner !== task.creator"> Assigned to: <span class="task-label-owner">{{ getUserById(task.owner) }} </span>
-            <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
-          </div>
+          <div class="task-label-owner" ng-click="poke(task, false)"> Assigned to: {{ getUserById(task.owner) }} </div>
+          <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+
 
           <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
           <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
@@ -156,15 +134,10 @@
 
     <div class="task-list">
       <div class="task" ng-repeat="task in allTasks | filter:{completed:true} | orderBy: '-created_at':true">
-        {{task.name}}
 
-          <span class="task-label-title">{{task.name}}</span>
-          from
+          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+
           <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
-          <div class="task-label-timestamp">{{task.createdAt | date:'HH:mm MM/dd/yyyy' }}</div>
-          <div ng-click="poke(task, false)" ng-show="task.owner !== task.creator"> Assigned to: <span class="task-label-owner">{{ getUserById(task.owner) }} </span>
-            <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
-          </div>
 
         <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
 
@@ -178,18 +151,15 @@
     <div class="task-list-created">
       <div class="task" ng-repeat="task in createdTasks | filter:{completed:false} | orderBy: '-created_at':true">
 
-          <span class="task-label-title">{{task.name}}</span>
-          from
+          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+
           <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
-          <div class="task-label-timestamp">{{task.createdAt | date:'HH:mm MM/dd/yyyy' }}</div>
-          <div ng-click="poke(task, false)" ng-show="task.owner !== task.creator"> Assigned to: <span class="task-label-owner">{{ getUserById(task.owner) }} </span>
-            <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
-          </div>
+          <div class="task-label-owner" ng-click="poke(task, false)"> Assigned to: {{ getUserById(task.owner) }} </div>
+          <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
 
 
         <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
         <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
-
       </div>
     </div>
 
@@ -199,3 +169,29 @@
 
 <!-- style="position: absolute; left: -9999px; width: 1px; height: 1px;" -->
 <!-- tabindex="-1" -->
+<!-- <!DOCTYPE html>
+<div ng-controller="ProfileController">
+    <script type="text/ng-template" id="profileModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Meow Profile!</h3>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li ng-repeat="item in items">
+                    <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+                </li>
+            </ul>
+            Selected: <b>{{ selected.item }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
+    <button type="button" class="btn btn-default" ng-click="open('lg')">Large modal</button>
+    <button type="button" class="btn btn-default" ng-click="open('sm')">Small modal</button>
+    <button type="button" class="btn btn-default" ng-click="toggleAnimation()">Toggle Animation ({{ animationsEnabled }})</button>
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+</div> -->

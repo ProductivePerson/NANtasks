@@ -6,7 +6,6 @@ angular.module('auth', [])
   $scope.signin = function () {
     Auth.signin($scope.user)
       .then(function (res) {
-        console.log(res);
         $window.localStorage.setItem('com.fridge', res.token);
         $window.localStorage.setItem('user.fridge', res.user.username);
         $window.localStorage.setItem('id.fridge', res.user.id);
@@ -14,15 +13,15 @@ angular.module('auth', [])
       })
       .catch(function (error) {
         var result = document.getElementsByClassName("auth-error");
-        var wrappedResult = angular.element(result)
+        var wrappedResult = angular.element(result);
         wrappedResult.addClass('show-auth-error');
       });
   };
 
+
   $scope.signup = function () {
     Auth.signup($scope.user)
       .then(function (res) {
-        console.log("resopnse from server", res);
         $window.localStorage.setItem('com.fridge', res.token);
         $window.localStorage.setItem('user.fridge', res.user.username);
         $window.localStorage.setItem('id.fridge', res.user.id);
@@ -31,14 +30,20 @@ angular.module('auth', [])
       .catch(function (error) {
         console.error("Signup error: ", error);
         var result = document.getElementsByClassName("auth-error");
-        var wrappedResult = angular.element(result)
+        var wrappedResult = angular.element(result);
         wrappedResult.addClass('show-auth-error');
       });
   };
-  //When 'logout' is clicked, signout() function removes token from local storage
+  //When 'Signout' is clicked, signout() function removes token from local storage
   //and redirects user to /signin
   $scope.signout = function(){
-    console.log('logout clicked');
-    Auth.signout();
+    Auth.signout({username: $window.localStorage['user.fridge']})
+      .then(function(){
+        $window.localStorage.removeItem('user.fridge');
+        $window.localStorage.removeItem('id.fridge');
+        $window.localStorage.removeItem('com.fridge');
+        $location.path('/signin');
+      });
   };
+
 });

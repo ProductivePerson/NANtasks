@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!-- the ui-view directive is where our templates will be loaded into when navigated to -->
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -23,13 +24,7 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-<<<<<<< HEAD
-  <h3>Fuck Yeah!</h3>
-=======
   <h3>{{groupName}}</h3>
->>>>>>> tempDev
-
 <!-- SIDEBAR THAT CONTAINS THE GENERAL TASKS, PROJ LIST, AND ADD NEW PROJ FEATURE -->
 <div class="sidebar" style="background-color:#eee; height:500px;">
   <nav class="sidebar-constants">
@@ -48,10 +43,7 @@
       <div class="projects-list-container">
         <ul class="projects-list">
           <li ng-repeat="user in usersInGroup">
-<<<<<<< HEAD
-=======
             <span style="color:black;" data="{{user._id}}" ng-click="deleteUserFromGroup(user._id)">X</span>
->>>>>>> tempDev
             {{user.username}}
           </li>
         </ul>
@@ -69,9 +61,10 @@
     </div>
 
     <div class="task-input">
-      <form class="form-inline" ng-submit="onSubmit(input)">
+      <form class="form-inline" ng-submit="onSubmit(input, toUser)">
         <div class="form-group">
           <input type="text" ng-model="input" class="form-control" placeholder="Add New Task">
+          <input type="text" ng-model="toUser" class="form-control" placeholder="To User(optional)">
         </div>
         <button type="submit" class="btn btn-default" value="Add Task">Add Task</button>
       </form>
@@ -80,7 +73,13 @@
     <div class="task-list">
       <div class="task" ng-repeat="task in allGroupTasks | filter:{completed:false} | orderBy: '-created_at':true">
 
-          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+          <span class="task-label-title">{{task.name}}</span>
+          from
+          <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
+          <div class="task-label-timestamp">{{task.createdAt | date:'HH:mm MM/dd/yyyy' }}</div>
+          <div ng-click="poke(task, false)" ng-show="task.owner !== task.creator"> Assigned to: <span class="task-label-owner">{{ getUserById(task.owner) }} </span>
+            <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+          </div>
 
         <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
         <span data="{{task._id}}" ng-click="complete(task._id)" style="float:right"><button class="btn btn-default">Complete</button></span>
@@ -92,7 +91,13 @@
     <h3>Completed Tasks</h3>
     <div class="task-list">
       <div class="task" ng-repeat="task in allGroupTasks | filter:{completed:true} | orderBy: '-created_at':true">
-          {{task.name}} --- {{task.createdAt | date:'HH:mm MM/dd/yyyy' }}
+          <span class="task-label-title">{{task.name}}</span>
+          from
+          <span class="task-label-creator">{{ getUserById(task.creator) }}</span>
+          <div class="task-label-timestamp">{{task.createdAt | date:'HH:mm MM/dd/yyyy' }}</div>
+          <div ng-click="poke(task, false)" ng-show="task.owner !== task.creator"> Assigned to: <span class="task-label-owner">{{ getUserById(task.owner) }} </span>
+            <span class="task-label-poked" ng-show="task.poked" ng-click="poke(task, true)">Please complete this soon!</span>
+          </div>
         <span data="{{task._id}}" ng-click="deleteById(task._id)" style="float:right"><button class="btn btn-default">Delete</button></span>
       </div>
     </div>

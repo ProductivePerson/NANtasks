@@ -1,10 +1,13 @@
-var app = require('./backend/server_config.js');
-var port = process.env.PORT || 3000;
+var express = require('express');
+var taskFuncs = require('./helpers.js');
+var bodyParser = require('body-parser');
+var fs = require('fs');
+var app = express();
 
-app.listen(port, function(){
-  console.log('Server is running on port ', port);
-});
-
+app.use(express.static(__dirname + "/../client"));
+app.use(express.static(__dirname + "/../node_modules"));
+app.use("/assets", express.static(__dirname + "/../assets/"));
+app.use(bodyParser.json());
 /* AUTHENTICATION ROUTES  */
 
 
@@ -19,24 +22,54 @@ app.post('/api/signup', function(req, res, next){
 	*/
 	var newUser = req.body;
 	taskFuncs.signup(newUser, res, next);
-})
+});
 
-//to check if user is signed in
-app.get('/api/signedin', function(req, res, next){
-	//see helpers.js for format of request. It checks the req.headers['x-access-token']
-	console.log("signedIn request received");
-	taskFuncs.checkAuth(req, res, next);
-})
+
+//to get an array of cat headers
+app.get('/api/allAssets', function(req, res) {
+	fs.readdir(__dirname + '/../assets/', function(err, files) {
+		if (err) console.error(err);
+		res.send(files);
+	});
+});
 
 //to sign in user
 app.post('/api/signin', function(req, res, next){
-	console.log("sign-in request received");
+	// console.log("sign-in request received");
 	// format of request object is same as signup
 	var user  = req.body;
+  // console.log("\n SERVER_CONFIG: app.post: user is: ", user);
 	taskFuncs.signin(user, res, next);
 
-})
+});
 
+app.post('/api/updateAvatar', function(req, res) {
+	taskFuncs.updateAvatar(req.body, res);
+});
+
+app.post('/api/user/updateUser', function(req, res, next) {
+	console.log("update username request received");
+	// var newUsername = req.body;
+
+	console.log("updated user name is ", req);
+	taskFuncs.updateUsername(req, res, next);
+});
+
+//sign user out and delete the signed in user document
+app.post('/api/signout', function(req, res, next){
+	//see helpers.js for format of request. It checks the req.headers['x-access-token']
+	console.log("signout request received");
+	var user = req.body;
+	taskFuncs.signout(user, res, next);
+});
+
+//get all of the users that are currently logged in
+app.get('/api/signedin', function(req, res, next){
+
+	console.log("signed in users request received");
+	var user = req.body
+	taskFuncs.signedin(user, res, next);
+});
 
 /* TASK ROUTES */
 
@@ -48,10 +81,21 @@ app.post('/api/user/usertasks', function(req, res){
 	// 	"user": "5787b4442cb0dadd096e94d7" // this is the same ID you received when the user signs in
 	// }
 
-	console.log("request received at usertasks for: ", req.body.user);
+	// console.log("request received at usertasks for: ", req.body.user);
 	var user = req.body.user;
 	taskFuncs.getUserTasks(user, res);
-})
+});
+
+app.post('/api/user/createdtasks', function(req, res){
+	//  proper format of request
+	// {
+	// 	"user": "5787b4442cb0dadd096e94d7" // this is the same ID you received when the user signs in
+	// }
+
+	console.log("request received at usertasks for: ", req.body.user);
+	var user = req.body.user;
+	taskFuncs.getCreatedTasks(user, res);
+});
 
  /*
 	PROPER FORMAT OF TASK
@@ -67,14 +111,14 @@ app.post('/api/user/usertasks', function(req, res){
 
  //to add tasks
 app.post('/api/tasks', function(req, res){
-	console.log('request received at addTask');
-	console.log("incoming task", req.body);
+	// console.log('request received at addTask');
+	// console.log("incoming task", req.body);
 	var task = req.body;
 
 	// var group = req.body.groupID;
 	//  added username
 	taskFuncs.addTask(task, res);
-})
+});
 
 //to delete task
 app.post('/api/tasks/delete', function(req, res){
@@ -83,16 +127,23 @@ app.post('/api/tasks/delete', function(req, res){
 			"id": "5783ec2a12cda2db6ce7ac91" <-- id of task to be deleted
 		}
 	*/
-	console.log("request received at deleteTask", req.body.id);
+	// console.log("request received at deleteTask", req.body.id);
 	taskFuncs.deleteTask(req.body.id, res);
-})
+});
 
 //to mark task as complete
 app.put('/api/tasks', function(req, res){
 	//format of request same as delete request
-	console.log("request received at completeTask for:", req.body.id);
+	// console.log("request received at completeTask for:", req.body.id);
 	taskFuncs.completeTask(req.body.id, res);
-})
+});
+
+//to mark task as poked
+app.put('/api/tasks/poked', function(req, res){
+	//format of request same as delete request
+	console.log("request received at pokeTask for:", req.body.id);
+	taskFuncs.pokeTask(req.body.id, res);
+});
 
 //to edit name of task
 app.put('/api/tasks/edit', function(req, res, next){
@@ -104,9 +155,9 @@ app.put('/api/tasks/edit', function(req, res, next){
 			"task": "go to gym"
 		}
 	*/
-	console.log("task was updated", req.body);
+	// console.log("task was updated", req.body);
 	taskFuncs.editTask(req.body._id, req.body.name, res, next);
-})
+});
 
 
 
@@ -115,7 +166,7 @@ app.put('/api/tasks/edit', function(req, res, next){
 
 //create group
 app.post('/api/createGroup', function(req, res){
-	console.log("request received at createGroup");
+	// console.log("request received at createGroup");
 	/*
 	PROPER FORMAT OF REQUEST
 
@@ -128,7 +179,7 @@ app.post('/api/createGroup', function(req, res){
 	var username = req.body.username;
 	var groupName = req.body.groupName;
 	taskFuncs.createGroup(groupName, username, res);
-})
+});
 
 //to delete group
 app.post('/api/deleteGroup', function(req, res){
@@ -137,13 +188,13 @@ app.post('/api/deleteGroup', function(req, res){
 			"id": "5783ec2a12cda2db6ce7ac91" <-- id of group to be deleted
 		}
 	*/
-	console.log("request received at deleteGroup", req.body.id);
+	// console.log("request received at deleteGroup", req.body.id);
 	taskFuncs.deleteGroup(req.body.id, res);
-})
+});
 
 //add user to group
 app.put('/api/group/addUser', function(req, res, next){
-	console.log("request received at addUserToGroup");
+	// console.log("request received at addUserToGroup");
 	/* PROPER FORMAT OF REQUEST
 	{
 		username: "konstantin", <- user to be added
@@ -152,7 +203,7 @@ app.put('/api/group/addUser', function(req, res, next){
 	*/
 
 	taskFuncs.addUserToGroup(req.body.username, req.body.groupID, res, next);
-})
+});
 
 
 //get groups for a user
@@ -167,12 +218,12 @@ app.post('/api/user/getGroups', function(req,res) {
 	var user = req.body.username;
 
 	taskFuncs.getGroups(user, res);
-})
+});
 
 
 //get users for group
 app.post('/api/group/getUsers', function(req, res){
-	console.log("request received at getUsersForGroup");
+	// console.log("request received at getUsersForGroup");
 	/* PROPER FORMAT OF REQUEST
 	{
 		groupID: "57885ea24bc2a48306d93ba9" <- group for which client wants users
@@ -180,12 +231,11 @@ app.post('/api/group/getUsers', function(req, res){
 	*/
 
 	taskFuncs.getUsers(req.body.groupID, res);
-})
+});
 
 app.post('/api/group/deleteUser', function(req, res){
-  taskFuncs.deleteUserFromGroup(req.body.id, req.body.groupID, res);
->>>>>>> tempDev
-})
+    taskFuncs.deleteUserFromGroup(req.body.id, req.body.groupID, res);
+});
 
 
 // get tasks for a group
@@ -198,12 +248,18 @@ app.post('/api/group/getTasks', function(req, res) {
 
 	*/
 	var group = req.body.groupID;
-
 	taskFuncs.collectGroupTasks(group, res);
-})
+});
 
 
 //*  USER ROUTE  *//
+
+//get all users from the db.
+app.get('/api/getAllUsers', function(req, res){
+	// console.log("getting all users");
+	taskFuncs.getAllUsers(res);
+});
+
 // Check if user exists
 app.post('/api/user/check', function(req, res, next) {
  /*PROPER FORMAT OF REQUEST
@@ -212,7 +268,7 @@ app.post('/api/user/check', function(req, res, next) {
 	 }
  */
  taskFuncs.checkUser(req.body.user, res, next);
-})
+});
 
 
 

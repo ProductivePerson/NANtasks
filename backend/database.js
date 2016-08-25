@@ -3,8 +3,9 @@ var bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 var SALT_WORK_FACTOR = 10;
 
-mongoose.connect('mongodb://needsclosure:needsclosure1@ds021289.mlab.com:21289/needsclosure');
-// mongoose.connect('mongodb://timtimClark:nancat5@ds027215.mlab.com:27215/nantasks');
+// mongoose.connect('mongodb://needsclosure:needsclosure1@ds021289.mlab.com:21289/needsclosure');
+mongoose.connect('mongodb://timtimClark:nancat5@ds027215.mlab.com:27215/nantasks');
+
 
 
 //TASK SCHEMA
@@ -14,11 +15,6 @@ var taskSchema = new Schema({
   createdAt: Date,
   dueDate: Date,
   completed: Boolean,
-  group: {type: Schema.Types.ObjectId, ref: 'Group'}
-});
-
-taskSchema.pre('save', function(next){
-  if(!this.group){this.group =  this.owner}
   poked: Boolean,
   creator: {type: Schema.Types.ObjectId, ref: 'User'},
   group: {type: String, ref: 'Group'}
@@ -27,10 +23,10 @@ taskSchema.pre('save', function(next){
 taskSchema.pre('save', function(next) {
   console.log("checking pre-save task feature!");
   if(!this.group){
-    this.group =  this.owner
+    this.group =  this.owner;
   }
     next();
-})
+});
 
 var Task = mongoose.model('Task', taskSchema);
 
@@ -41,7 +37,8 @@ var UserSchema = new Schema({
   password: { type: String, required: true },
 	token: String,
 	tasks: [{type: Schema.Types.ObjectId, ref: 'Task'}],
-	groups: [{type: Schema.Types.ObjectId, ref: 'Group'}]
+	groups: [{type: Schema.Types.ObjectId, ref: 'Group'}],
+  avatar: [Number]
 });
 
 
@@ -90,4 +87,14 @@ bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 var User = mongoose.model('User', UserSchema);
 
 
-module.exports = {user: User, task: Task, group: Group};
+
+//this schema will set up an object with all of the logged in user
+var singedInUserSchema = new Schema({
+	username: { type: String, required: true, index: { unique: true } }
+
+});
+
+var signedInUser = mongoose.model('singnedInUser', singedInUserSchema);
+
+
+module.exports = {user: User, inUser: signedInUser, task: Task, group: Group};

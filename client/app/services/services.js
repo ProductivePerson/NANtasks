@@ -1,5 +1,67 @@
 angular.module('services', [])
 
+//display user profile, allow for updating avatar, username and password
+.factory('Profile', function($http) {
+  var getUserProfile = function() {
+    return $http({
+      method: 'GET',
+      url: '/api/user/profile'
+    }).then(function(resp) {
+      console.log("getUserProfile response from server", resp.data);
+      return resp.data;
+    }).catch(function(err) {
+      console.log("can't retrieve user profile", err);
+    });
+  };
+
+  var updateUsername = function(oldUsername, newUsername) {
+    return $http({
+      method: 'POST',
+      url: '/api/user/updateUser',
+      data: {
+        'oldUsername': oldUsername,
+        'newUsername': newUsername
+      }
+    }).then(function(resp) {
+      console.log("updateUsername is ", resp.config.data);
+      return resp.config.data;
+    }).catch(function(err) {
+      console.log("can't update username", err);
+    });
+  };
+
+  var updatePassword = function(password) {
+    return $http({
+      method: 'PUT',
+      url: '/api/user/password',
+      data: password
+    }).then(function(resp) {
+      return resp.data;
+    }).catch(function(err) {
+      console.log("can't update password", err);
+    });
+  };
+
+  var updateAvatar = function(avatar) {
+    return $http({
+      method: 'PUT',
+      url: '/assets/avatar',
+      data: avatar
+    }).then(function(resp) {
+      return resp;
+    }).catch(function(err) {
+      console.log("can't update avatar", err);
+    });
+  };
+
+  return {
+    getUserProfile: getUserProfile,
+    updateUsername: updateUsername,
+    updatePassword: updatePassword,
+    updateAvatar: updateAvatar
+  };
+})
+
 .factory('Tasks', function ($http) {
 
   var isUser = function(username){
@@ -11,7 +73,7 @@ angular.module('services', [])
    }).then(function(resp){
      //console.log("data from server", resp.data);
      return resp.data;
-   })
+   });
  };
 
   var getUserTasks = function(user){
@@ -22,7 +84,19 @@ angular.module('services', [])
       }).then(function(resp){
         //console.log(resp.data);
         return resp.data;
-      })
+      });
+    };
+
+    //as above, but gets tasks created by user.
+    var getCreatedTasks = function(user){
+      return $http({
+        method: 'POST',
+        url: '/api/user/createdtasks',
+        data: user
+      }).then(function(resp){
+        //console.log(resp.data);
+        return resp.data;
+      });
     };
 
     var fetchAllTasks = function(){
@@ -31,7 +105,7 @@ angular.module('services', [])
           url: '/api/tasks'
         }).then(function(resp){
           return resp.data;
-        })
+        });
       };
 
   var addTask = function(task, callback){
@@ -41,14 +115,14 @@ angular.module('services', [])
       url: '/api/tasks',
       data: task
     }).then(function(resp){
-      console.log("here is response from server", resp)
+      console.log("here is response from server", resp);
       //using callback to update our tasks ONLY after respond
       callback(resp);
       //return resp;
     })
     .catch(function(err){
       console.err("Error adding task: ", err);
-    })
+    });
   };
 
   var deleteTask = function(task, callback){
@@ -61,7 +135,7 @@ angular.module('services', [])
        callback(resp);
      }).catch(function(err){
        console.log('Error', err);
-     })
+     });
    };
 
    var completeTask = function(task, callback){
@@ -74,18 +148,32 @@ angular.module('services', [])
        callback(resp);
      }).catch(function(err){
        console.log('Error', err);
-     })
+     });
+   };
+
+  var pokeTask = function(task, callback){
+     return $http({
+       method: 'PUT',
+       url: '/api/tasks/poked',
+       data: task
+     }).then(function(resp){
+       //using callback to update our tasks ONLY after respond
+       callback(resp);
+     }).catch(function(err){
+       console.log('Error', err);
+     });
    };
 
   return {
-    fetchAllTasks:fetchAllTasks,
-    getUserTasks:getUserTasks,
+    fetchAllTasks: fetchAllTasks,
+    getUserTasks: getUserTasks,
     addTask: addTask,
-    deleteTask:deleteTask,
+    deleteTask: deleteTask,
     completeTask: completeTask,
-    isUser:isUser
-  }
-
+    pokeTask: pokeTask,
+    isUser: isUser,
+    getCreatedTasks: getCreatedTasks
+  };
 })
 
 .factory('Proj', function($http){
@@ -103,11 +191,9 @@ angular.module('services', [])
     })
     .catch(function(err){
       console.error(err);
-    })
+    });
   };
 
-<<<<<<< HEAD
-=======
   var deleteGroupbyID = function(group){
      return $http({
        method: 'POST',
@@ -120,10 +206,9 @@ angular.module('services', [])
        //callback(resp);
      }).catch(function(err){
        console.log('Error', err);
-     })
+     });
    };
 
->>>>>>> tempDev
   var addUserToGroup = function(user){
     return $http({
       method: 'PUT',
@@ -132,16 +217,14 @@ angular.module('services', [])
     })
     .then(function(resp){
       //return group object sent back from server
-      console.log('get response on add new user', resp)
+      console.log('get response on add new user', resp);
       return resp;
     })
     .catch(function(err){
       console.error(err);
-    })
+    });
   };
 
-<<<<<<< HEAD
-=======
   var deleteUserByID = function(user){
     console.log(user);
     return $http({
@@ -155,10 +238,9 @@ angular.module('services', [])
       //callback(resp);
     }).catch(function(err){
       console.log('Error', err);
-    })
+    });
   };
 
->>>>>>> tempDev
   var fetchAllProjectTasks = function(id){
     return $http({
       method: 'POST',
@@ -169,8 +251,8 @@ angular.module('services', [])
       return resp;
     })
     .catch(function(err){
-      console.error("Error fetching all group tasks: ", err)
-    })
+      console.error("Error fetching all group tasks: ", err);
+    });
   };
   var fetchProjectMembers = function(id){
     return $http({
@@ -182,8 +264,8 @@ angular.module('services', [])
       return resp;
     })
     .catch(function(err){
-      console.error(err)
-    })
+      console.error(err);
+    });
   };
   var getUserProjectsList = function(user){
     return $http({
@@ -195,24 +277,147 @@ angular.module('services', [])
       return resp;
     })
     .catch(function(err){
-      console.error(err)
-    })
+      console.error(err);
+    });
+  };
+
+  var getAllUsers = function(){
+    return $http({
+          method: 'GET',
+          url: '/api/getAllUsers'
+        }).then(function(resp){
+          return resp.data;
+        });
+  };
+
+  var getOneUser = function(username, cb) {
+    getAllUsers().then(function (res) {
+      var user = res.filter(function (userObj) {
+        return userObj.username === username;
+      });
+      cb(user[0]);
+    });
   };
 
   return {
-    addUserToGroup:addUserToGroup,
+    addUserToGroup: addUserToGroup,
     addProject: addProject,
-<<<<<<< HEAD
-=======
     deleteGroupbyID:deleteGroupbyID,
     deleteUserByID:deleteUserByID,
->>>>>>> tempDev
     fetchAllProjectTasks: fetchAllProjectTasks,
     fetchProjectMembers: fetchProjectMembers,
-    getUserProjectsList: getUserProjectsList
-  }
+    getUserProjectsList: getUserProjectsList,
+    getAllUsers: getAllUsers,
+    getOneUser: getOneUser
+  };
 })
+.factory('Avatar', function(Proj, $http) {
+  var catHats,
+      catHeads,
+      selectedCat,
+      selectedHat,
+      loaded = 0,
+      img1 = new Image(),
+      img2 = new Image();
 
+  var init = function() {
+    $http({
+      method:"GET",
+      url: window.location.origin + "/api/allAssets/"
+    }).then(function(resp) {
+      catHats = resp.data
+        .filter(function (file) {
+          return !!~file.indexOf('hat');
+        })
+        .map(function (file) {
+          var image = new Image();
+          image.src = "/assets/" + file;
+          return image;
+        });
+      catHeads = resp.data
+        .filter(function (file) {
+          return !!~file.indexOf('cat');
+        }).map(function (file) {
+          var image = new Image();
+          image.src = "/assets/" + file;
+          return image;
+        });
+    });
+  };
+  var drawLocalAvatar = function(headNum, hatNum) {
+    loaded = 0;
+    selectedCat = headNum;
+    selectedHat = hatNum;
+    img1 = catHeads[headNum];
+    img2 = catHats[hatNum];
+    img2.onload = drawAvatarOnNav;
+    img1.onload = drawAvatarOnNav;
+  };
+  var drawAvatarOnNav = function() {
+    loaded++;
+    if (loaded >= 2) {
+      var canvas = document.createElement("canvas"),
+      brush = canvas.getContext("2d");
+      canvas.width="110";
+      canvas.height="110";
+
+      brush.drawImage(img1, 0, 0);
+      console.log(img2.src);
+      if (selectedHat !== 0) {
+        brush.drawImage(img2, 23, 10);
+      }
+      document.getElementsByClassName("avatar")[0].children[0].src = canvas.toDataURL();
+    }
+  };
+
+  var drawAvatarOnProfile = function() {
+    var canvas = document.getElementById('avatarCanvas');
+    var brush = canvas.getContext("2d");
+    var catHat = document.getElementsByClassName('catHat');
+
+    brush.drawImage(catHeads[selectedCat], 0, 0);
+    if (selectedHat > 0) {
+      brush.drawImage(catHats[selectedHat], 23, 10);
+    }
+  };
+  var saveAvatar = function(username) {
+    // save canvas image as data url (png format by default)
+    var canvas = document.getElementById('avatarCanvas');
+    var dataURL = canvas.toDataURL();
+    // set canvasImg image src to dataURL
+    // so it can be saved as an image
+    document.getElementsByClassName("avatar")[0].children[0].src = dataURL;
+    $http({
+      method:"post",
+      url: window.location.origin + "/api/updateAvatar/",
+      data: JSON.stringify({username: username, avatar: [selectedCat, selectedHat]})
+    }).then(function(resp) {
+      console.log("Sent something to the server. You're on your own now");
+    });
+  };
+  var toggleCat = function(num) {
+    selectedCat = Math.abs((selectedCat + num)%16);
+
+    drawAvatarOnProfile();
+  };
+  var setHat = function(hat) {
+    selectedHat = hat;
+    drawAvatarOnProfile();
+  };
+  var getCatHats = function() {
+    return catHats;
+  };
+  return {
+    init: init,
+    drawLocalAvatar:drawLocalAvatar,
+    drawAvatarOnNav:drawAvatarOnNav,
+    drawAvatarOnProfile: drawAvatarOnProfile,
+    getCatHats: getCatHats,
+    toggleCat: toggleCat,
+    setHat: setHat,
+    saveAvatar: saveAvatar
+  };
+})
 .factory('Auth', function ($http, $location, $window) {
   var signin = function (user) {
     return $http({
@@ -222,8 +427,17 @@ angular.module('services', [])
     })
     .then(function (resp) {
       return resp.data;
-    })
+    });
+  };
 
+  var signedin = function () {
+    return $http({
+      method: 'GET',
+      url: '/api/signedin',
+    })
+    .then(function (resp) {
+      return resp.data;
+    });
   };
 
   var signup = function (user) {
@@ -234,26 +448,42 @@ angular.module('services', [])
     })
     .then(function (resp) {
       return resp.data;
-    })
+    });
   };
 
   var isAuth = function () {
     return !!$window.localStorage.getItem('com.fridge');
   };
 
-  var signout = function () {
-    $window.localStorage.removeItem('user.fridge');
-    $window.localStorage.removeItem('id.fridge');
-    $window.localStorage.removeItem('com.fridge');
+  var signout = function (user) {
 
-    $location.path('/signin');
+    return $http({
+      method: 'POST',
+      url: '/api/signout',
+      data: user
+    })
+    .then(function (resp) {
+      return resp.data;
+    });
+
   };
-
 
   return {
     signin: signin,
     signup: signup,
     isAuth: isAuth,
-    signout: signout
+    signout: signout,
+    signedin: signedin
+  };
+})
+.service("UserTransfer", function() {
+  var users = [];
+  return {
+    setUsers: function(list) {
+      users = list;
+    },
+    getUsers: function() {
+      return users;
+    }
   };
 });

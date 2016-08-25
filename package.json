@@ -13,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.5.7",
+    "angular-animate": "^1.5.7",
+    "angular-ui-bootstrap": "^2.0.0",
     "angular-ui-router": "^0.3.1",
     "bcrypt": "latest",
     "body-parser": "^1.5.2",
@@ -23,5 +25,8 @@
     "jwt-simple": "^0.2.0",
     "mongodb": "^2.2.1",
     "mongoose": "^4.5.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
   }
 }

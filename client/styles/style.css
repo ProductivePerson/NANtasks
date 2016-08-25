@@ -1,62 +1,159 @@
 .main-logo, .task-input {
-  margin: 0 auto;
-  text-align: center;
+ margin: 0 auto;
+ text-align: center;
 }
 
 .main-logo {
-  margin: 10px;
+ margin: 10px;
 }
 
 .task-input {
-  font-size: 24px;
-  padding: 20px;
-  width: 500px;
+ font-size: 24px;
+ padding: 20px;
+ width: 500px;
 }
 .task-list {
-  text-align: center;
+ text-align: center;
 }
 .task {
-  margin: 3px;
-  border-color: #fff;
-  font-size: 24px;
-  height: 50px;
-  border: 1px solid #eee;
+ margin: 3px;
+ border-color: #fff;
+ font-size: 24px;
+ height: 100px;
+ border: 1px solid #eee;
 }
+
+.avatar {
+ margin-top: -80px;
+ margin-left: 200px;
+ display: inline-block;
+ border: 2px solid black;
+ margin-bottom: 10px;
+}
+
+.avatarDiv {
+ display: inline-block;
+}
+
 .sidebar {
-  float: left;
-  width: 17%;
-  background-color: grey;
+ float: left;
+ width: 17%;
+ background-color: grey;
 }
 
 .sidebar-constants {
-  margin: 0 auto;
-  text-decoration: none;
-  margin-left: 15px;
-  color: black;
+ margin: 0 auto;
+ text-decoration: none;
+ margin-left: 15px;
+ color: black;
 }
 
 .sidebar-projects {
-  border-bottom: 1px solid;
-  margin-right: 5px;
+ border-bottom: 1px solid;
+ margin-right: 5px;
 }
 
 .add-project-icon {
-  max-width: 100%
+ max-width: 100%
 }
 
 .projects-list {
-  list-style-type: none;
+ list-style-type: none;
 }
 
 .current-user-greeting {
-  font-weight: bold;
+ font-weight: bold;
+ display: block;
 }
 
 .auth-error {
-  visibility: hidden;
+ visibility: hidden;
 }
 
 .show-auth-error {
-  color: red;
-  visibility: visible;
+ color: red;
+ visibility: visible;
+}
+
+.navbar-brand {
+
+}
+
+.current-user-greeting-container {
+ display: block;
+}
+
+.hat {
+ display: inline-block;
+ float: left;
+ text-align: center;
+ padding: 29px;
+}
+
+#catSwitcher {
+ text-align: center;
+}
+
+.cat-footer {
+ margin-top: 100px;
+ padding: 15px;
+ padding-top: 20px;
+ text-align: right;
+ border-top: 1px solid #e5e5e5 ;
+}
+
+.hatWindow {
+ display: block;
+}
+
+.greet {
+ text-align: center;
+}
+.blah {
+ text-align: center;
+}
+
+#usernameLabel {
+  font-weight: bold;
+  display: inline-block;
+  float: left;
+}
+
+#usernameDisplay {
+  display: inline-block;
+  padding-left: 15px;
+}
+
+#usernameForm {
+  padding-left: 15px;
+}
+
+.task-label-title {
+  font-weight: bold;
+}
+
+.task-label-creator {
+  font-size: 12pt;
+  font-style: oblique;
+  padding: 4px;
+  border: 1px solid grey;
+  background-color: #e1cdfa;
+}
+
+.task-label-timestamp {
+  font-size: 14pt;
+  color: grey;
+}
+
+.task-label-owner {
+  font-size: 12pt;
+  font-style: oblique;
+  background-color: #e1cdfa;
+  border: 1px solid grey;
+  margin: 4px;
+}
+
+.task-label-poked {
+  margin:4px;
+  background-color: #ffcccc ;
 }
