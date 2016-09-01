@@ -70,6 +70,7 @@ angular.module('profile', ['ui.bootstrap','ngAnimate'])
 
   $scope.init = function () {
     $scope.catHats = Avatar.getCatHats().map(function (img) {
+        console.log("fixing it now. img is ", img.src);
       return img.src.slice(29);
     });
     var user = document

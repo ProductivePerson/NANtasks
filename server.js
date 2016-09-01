@@ -5,6 +5,8 @@ app.listen(port, function(){
   console.log('Server is running on port ', port);
 });
 
+
+app.use('/assets', express.static(__dirname + '/assets/'));
 /* AUTHENTICATION ROUTES  */
 
 
