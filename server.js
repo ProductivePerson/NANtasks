@@ -6,7 +6,7 @@ app.listen(port, function(){
 });
 
 
-app.use('/assets', express.static(__dirname + '/assets/'));
+
 /* AUTHENTICATION ROUTES  */
 
 
