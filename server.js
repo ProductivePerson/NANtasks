@@ -128,7 +128,7 @@ app.post('/api/createGroup', function(req, res){
 	var username = req.body.username;
 	var groupName = req.body.groupName;
 	taskFuncs.createGroup(groupName, username, res);
-})
+});
 
 //to delete group
 app.post('/api/deleteGroup', function(req, res){
@@ -139,7 +139,7 @@ app.post('/api/deleteGroup', function(req, res){
 	*/
 	console.log("request received at deleteGroup", req.body.id);
 	taskFuncs.deleteGroup(req.body.id, res);
-})
+});
 
 //add user to group
 app.put('/api/group/addUser', function(req, res, next){
@@ -152,7 +152,7 @@ app.put('/api/group/addUser', function(req, res, next){
 	*/
 
 	taskFuncs.addUserToGroup(req.body.username, req.body.groupID, res, next);
-})
+});
 
 
 //get groups for a user
@@ -167,7 +167,7 @@ app.post('/api/user/getGroups', function(req,res) {
 	var user = req.body.username;
 
 	taskFuncs.getGroups(user, res);
-})
+});
 
 
 //get users for group
@@ -180,12 +180,11 @@ app.post('/api/group/getUsers', function(req, res){
 	*/
 
 	taskFuncs.getUsers(req.body.groupID, res);
-})
+});
 
 app.post('/api/group/deleteUser', function(req, res){
   taskFuncs.deleteUserFromGroup(req.body.id, req.body.groupID, res);
->>>>>>> tempDev
-})
+});
 
 
 // get tasks for a group
